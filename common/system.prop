@@ -1,3 +1,13 @@
 # This file will be read by resetprop
 # Example: Change dpi
 # ro.sf.lcd_density=320
+
+## You can edit this if you like ;)
+## More information in the XDA thread
+dalvik.vm.image-dex2oat-filter=interpret-only
+## You can edit this if you like ;)
+
+## Don't touch me :P
+dalvik.vm.image-dex2oat-filter=speed
+dalvik.vm.dex2oat-filter=speed
+## Don't touch me :P
