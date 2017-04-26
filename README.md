@@ -1,30 +1,19 @@
-## !! Please update this README.md file for online Repo submission !!
-You can edit your `README.md` within Github's online editor, it also has an preview button!  
-Check the [Markdown Cheat Sheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) for markdown syntaxes, it's super easy!  
+## Android Runtime Optimization
 
-## How to Create a Magisk Module
-1. Clone / download this repo
-2. Open `config.sh`, follow the instructions written at the beginning of the file. You should at least change `config.sh` and `module.prop`
-3. Zip your files, the zipped file is a flashable zip for both Magisk Manager and custom recoveries
-4. Please check **Notes** for precautions
+Android Lollipop includes a new virtual machine called ART (Android Runtime.) ART uses AOT (ahead-of-time) compilation into native code, which performs better than JIT (just-in-time) compilation into bytecode. You can configure ART to perform this optimization in different ways.
+Android Lollipop includes the dex2oat tool for optimizing applications on deployment.
 
-## How to Request a New Repo
-1. Fork [this repo](https://github.com/topjohnwu/magisk-module-template)
-2. Create your own Magisk Module as stated above
-3. Push your changes to Github
-4. Change the description of the Github repo to **the id of your module. This is important! Never change it to anything else!**
-5. Open an issue in [topjohnwu/Magisk_Repo_Central](https://github.com/topjohnwu/Magisk_Repo_Central/issues/new)  
-   Please include your repo link so I can check and clone it
-6. Your repo should be cloned into [Magisk-Modules-Repo](https://github.com/Magisk-Modules-Repo), and you should receive an email to become the collaborator of that repo so you can edit it in the future.
+### Compiler Filters
 
-## Notes
-1. (Windows aware!!) This git repo is configured to force Unix endlines on all necessary files. The line endings on these files should remain the Unix format. Please use advanced text editors like Sublime, Atom, Notepad++ etc. to edit the text files
-2. In `module.prop`, `version` is any string you like, so any fancy version name (e.g. ultra-beta-v0.0.0.1) is allowed. However, `versionCode` **MUST** be an integer. The value is used for version comparison.
-2. Make sure your module ID **doesn't contain any spaces**.
-3. (For repo developers) Magisk Manager monitors all repo's `master` branch. So any changes to the branch `master` will be reflected to all users immediately. If you are working on an update for a module, please work on another branch, make sure it works, and then merge the changes back to `master`.
+In L, dex2oat takes a variety of --compiler-filter options to control how it compiles. Passing in a compiler filter flag for a particular app specifies how it’s pre-optimized. Here’s a description of each available option:
 
-## Best Practice for Updating a Repo
-1. Open a new branch, and start update your files on the new branch
-2. Test if everything works fine
-3. Bump up the `versionCode` in `module.prop`, or Magisk Manager won't know that your module is updated!
-4. Merge the changes back to master, all users shall now receive the update in Magisk Manager
+ * **_everything_** - compiles almost everything, excluding class initializers and some rare methods that are too large to be represented by the compiler’s internal representation.
+ * **_speed_** - compiles most methods and maximizes runtime performance, which is the default option.
+ * **_balanced_** - attempts to get the best performance return on compilation investment.
+ * **_space_** - compiles a limited number of methods, prioritizing storage space.
+ * **_interpret-only_** - skips all compilation and relies on the interpreter to run code.
+ * **_verify-none_** - special option that skips verification and compilation, should be used only for trusted system code.
+
+This module, by default, uses **WITH_ART_SMALL_MODE** by default. You can go to this module's **system.prop** and change the value of `dalvik.vm.dex2oat-filter` to any of the given compiler filters above.
+
+[More info about this topic here](https://source.android.com/devices/tech/dalvik/configure)
