@@ -17,3 +17,4 @@ In L, dex2oat takes a variety of --compiler-filter options to control how it com
 This module, by default, uses **WITH_ART_SMALL_MODE** by default. You can go to this module's **system.prop** and change the value of `dalvik.vm.dex2oat-filter` to any of the given compiler filters above.
 
 [More info about this topic here](https://source.android.com/devices/tech/dalvik/configure)
+[See XDA Thread](https://forum.xda-developers.com/apps/magisk/module-android-runtime-optimization-t3596559)
