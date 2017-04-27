@@ -11,9 +11,15 @@ set_prop() {
   resetprop $1 $2
 }
 
+get_file_prop() {
+  _prop=$(grep "$1=" $2)
+  echo ${_prop#*=}
+  unset _prop
+}
+
 ## You can edit this if you like ;)
 ## More information in the XDA thread
-set_prop dalvik.vm.image-dex2oat-filter interpret-only
+set_prop dalvik.vm.image-dex2oat-filter $(get_file_prop dalvik.vm.image-dex2oat-filter $MODDIR/module.prop)
 ## You can edit this if you like ;)
 
 ## Don't touch me :P
