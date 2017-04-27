@@ -17,6 +17,5 @@ set_prop dalvik.vm.image-dex2oat-filter interpret-only
 ## You can edit this if you like ;)
 
 ## Don't touch me :P
-set_prop dalvik.vm.image-dex2oat-filter speed
 set_prop dalvik.vm.dex2oat-filter speed
 ## Don't touch me :P
