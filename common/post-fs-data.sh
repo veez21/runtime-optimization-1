@@ -19,7 +19,7 @@ get_file_prop() {
 
 ## You can edit this if you like ;)
 ## More information in the XDA thread
-set_prop dalvik.vm.image-dex2oat-filter $(get_file_prop dalvik.vm.image-dex2oat-filter $MODDIR/module.prop)
+set_prop dalvik.vm.image-dex2oat-filter $(get_file_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop)
 ## You can edit this if you like ;)
 
 ## Don't touch me :P
