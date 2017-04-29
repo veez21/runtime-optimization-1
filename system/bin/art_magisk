@@ -1,0 +1,181 @@
+#!/system/bin/sh
+# Terminal Magisk Mod Template
+# by veez21 @ xda-developers
+
+
+# Magisk Module ID **
+# > ENTER MAGISK MODULE ID HERE
+ID="runtime-optimization"
+
+#=========================== Set Log Files
+# > Logs should go in this file
+LOG=/magisk/${ID}/terminal.log
+# > Verbose output goes here
+VERLOG=/magisk/${ID}/verbose.log
+
+#=========================== Start Logging verbosely
+set -x 2>$VERLOG
+
+#=========================== Set Busybox (Used by Magisk) up
+# > Do not touch!
+alias busybox=/data/magisk/busybox
+for i in $(busybox --list); do
+  if [ $i != 'echo' ]; then
+    alias $i="/data/magisk/busybox $i"
+  fi
+done
+
+#=========================== Default Functions
+
+# get_file_prop <property> <prop.file>
+get_file_prop() {
+  _prop=$(grep "$1=" $2)
+  echo ${_prop#*=}
+  unset _prop
+}
+
+# set_file_prop <property> <value> <prop.file>
+set_file_prop() {
+  sed -i "s/${1}=.*/${1}=${2}/g" $3
+}
+
+# mktouch <file dir> <content>
+mktouch() { 
+  mkdir -p ${1%/*}
+  if [ -z "$2" ]; then
+    touch $1
+  else
+    echo $2 > $1
+  fi
+  chmod 644 $1
+}
+
+# runl <cmd>
+runl() {
+  echo "[$(date +"%F %T")]: $@" >> $LOG 2>>$LOG
+  $@ 2>>$LOG
+  return $?
+}
+
+#=========================== Default Variables
+# > Stuff here is used for some other stuff
+# > Edit only if necessary!
+
+# Magisk Mod Directory
+MODDIR="/magisk/$ID"
+# Version Number
+VER=$(get_file_prop version $MODDIR/module.prop)
+# Version Code
+REL=$(get_file_prop versionCode $MODDIR/module.prop)
+# Author
+AUTHOR=$(get_file_prop author $MODDIR/module.prop)
+# Mod Name/Title
+MODTITLE=$(get_file_prop name $MODDIR/module.prop)
+
+# Colors
+G='\e[01;32m'    # GREEN
+R='\e[01;31m'    # RED
+Y='\e[01;33m'    # YELLOW
+B='\e[01;34m'    # BLUE
+V='\e[01;35m'    # VIOLET
+Bl='\e[01;30m'   # BLACK
+C='\e[01;36m'    # CYAN
+W='\e[01;37m'    # WHITE
+N='\e[00;37;40m' # How to use (example): echo "${G}example${N}"
+
+# Divider (based on $MODTITLE, $VER, and $REL characters)
+div="${Bl}$(printf '%*s' "$(($(echo $MODTITLE | wc -c)+$(echo $VER | wc -c)+$(echo $REL | wc -c)))" '' | sed 's/ /=/g')${N}"
+
+#=========================== Main
+# > You can start your MOD here.
+# > You can add functions, variables & etc.
+# > Rather than editing the default vars above.
+
+
+# Name of the Module <- Edit this
+# by Author <- Edit this
+clear
+echo "$div"
+echo "${W}$MODTITLE $VER${N}${Bl}($REL)${N}"
+echo "by ${W}$AUTHOR${N}"
+echo "$div"
+
+echo ""
+echo "Current: ${W}$(getprop dalvik.vm.image-dex2oat-filter)${N}"
+if [ $(getprop dalvik.vm.image-dex2oat-filter) != $(get_file_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop) ]; then
+  echo "To be applied: ${Bl}$(get_file_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop)${N}"
+fi
+echo ""
+echo "Compiler Filters:"
+echo " 1 - ${W}everything${N}"
+echo " 2 - ${W}speed${N}"
+echo " 3 - ${W}balanced${N}"
+echo " 4 - ${W}space${N}"
+echo " 5 - ${W}interpret-only${N}"
+echo " 6 - ${W}verify-none${N}"
+echo " xda - ${Bl}See XDA Thread for more information${N}"
+echo ""
+echo " 0 - ${Bl}Exit${N}"
+echo ""
+echo -n "[CHOICE]: "
+read filter
+case $filter in
+  1) echo "Changing to ${W}everything${N}"
+     sleep 0.3
+	 set_file_prop dalvik.vm.image-dex2oat-filter everything $MODDIR/system.prop
+	 echo "Reboot to apply changes"
+    ;;
+  2) echo "Changing to ${W}speed${N}"
+     sleep 0.3
+	 set_file_prop dalvik.vm.image-dex2oat-filter speed $MODDIR/system.prop
+	 echo "Reboot to apply changes"
+    ;;
+  3) echo "Changing to ${W}balanced${N}"
+     sleep 0.3
+	 set_file_prop dalvik.vm.image-dex2oat-filter balanced $MODDIR/system.prop
+	 echo "Reboot to apply changes"
+    ;;
+  4) echo "Changing to ${W}space${N}"
+     sleep 0.3
+	 set_file_prop dalvik.vm.image-dex2oat-filter space $MODDIR/system.prop
+	 echo "Reboot to apply changes"
+    ;;
+  5) echo "Changing to ${W}interpret-only${N}"
+     sleep 0.3
+	 set_file_prop dalvik.vm.image-dex2oat-filter interpret-only $MODDIR/system.prop
+	 echo "Reboot to apply changes"
+    ;;
+  6) echo "Changing to ${W}verify-none${N}"
+     sleep 0.3
+	 set_file_prop dalvik.vm.image-dex2oat-filter verify-none $MODDIR/system.prop
+	 echo "Reboot to apply changes"
+    ;;
+  xda) am start https://forum.xda-developers.com/apps/magisk/module-android-runtime-optimization-t3596559 >> $LOG
+       exit
+    ;;
+  0) exit ;;
+  *) echo Invalid 
+     exit 1 ;;
+esac
+
+if [ $(getprop dalvik.vm.image-dex2oat-filter) != $(get_file_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop) ]; then
+  echo "Wiping dalvik-cache and rebooting emediately is necessary for it to take effect."
+  echo -n "Wipe? < y | n> "
+  read wipe
+  if [ "$wipe" == y ]; then
+    for i in  $(find /data/dalvik-cache -type f); do
+      rm -f $i 2>>$LOG
+    done
+	echo "Reboot or your apps won't open..."
+	exit
+  elif [ "$wipe" == n ]; then
+    echo "Before booting back, wipe dalvik-cache for the changes to take effect."
+    exit
+  else
+    echo "Invalid!"
+	exit 1
+  fi
+fi
+
+
+exit $?	 

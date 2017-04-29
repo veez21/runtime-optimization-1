@@ -4,7 +4,7 @@
 
 ## You can edit this if you like ;)
 ## More information in the XDA thread
-dalvik.vm.image-dex2oat-filter=interpret-only
+dalvik.vm.image-dex2oat-filter=speed
 ## You can edit this if you like ;)
 
 ## Don't touch me :P
