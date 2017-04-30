@@ -20,5 +20,5 @@ pm.dexopt.shared-apk=speed
 pm.dexopt.forced-dexopt=speed
 pm.dexopt.core-app=speed
 pm.dexopt.first-boot=interpret-only
-pm.dexopt.boot=interpret-only
+pm.dexopt.boot=verify-profile
 ## Don't touch me :P
