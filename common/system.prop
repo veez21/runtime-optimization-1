@@ -9,4 +9,7 @@ dalvik.vm.image-dex2oat-filter=speed
 
 ## Don't touch me :P
 dalvik.vm.dex2oat-filter=speed
+dalvik.vm.check-dex-sum=false
+dalvik.vm.checkjni=false
+dalvik.vm.execution-mode=int:jit
 ## Don't touch me :P
