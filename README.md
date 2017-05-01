@@ -41,6 +41,7 @@ And then it'll present you with a menu that is pretty simple and easy to work wi
 #### v0.6 
 * Fixed bootloop issues
 
+
 [More info about this topic here](https://source.android.com/devices/tech/dalvik/configure)
 
 [See XDA Thread](https://forum.xda-developers.com/apps/magisk/module-android-runtime-optimization-t3596559)
