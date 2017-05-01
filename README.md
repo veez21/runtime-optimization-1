@@ -14,6 +14,33 @@ In L, dex2oat takes a variety of --compiler-filter options to control how it com
  * **_interpret-only_** - skips all compilation and relies on the interpreter to run code.
  * **_verify-none_** - special option that skips verification and compilation, should be used only for trusted system code.
 
+### Preference
+
+You can change the default compiler filter with the one you prefer (or want to experiment with).
+Just go to Terminal Emulator and then type:
+	art_magisk
+And then it'll present you with a menu that is pretty simple and easy to work with.
+
+### Changelog
+v0.1 
+- Initial Release
+v0.2 
+- post-fs-data.sh and service.sh is additionally used on setting properties
+v0.3 
+- post-fs-data.sh and service.sh now reads from system.prop
+v0.3.1 
+- fixed typo in post-fs-data.sh and service.sh
+v0.4 
+- Now has a UI in Terminal Emulator (how to use is in the OP)
+- Default compiler filter is speed
+- Automatically wipes dalvik-cache after flashing
+v0.5 
+- Added more properties
+- Does not overwrite saved filter every update
+- Removed post-fs-data.sh and service.sh
+v0.6 
+- Fixed bootloop issues
+
 [More info about this topic here](https://source.android.com/devices/tech/dalvik/configure)
 
 [See XDA Thread](https://forum.xda-developers.com/apps/magisk/module-android-runtime-optimization-t3596559)
