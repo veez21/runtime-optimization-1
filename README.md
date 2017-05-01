@@ -22,24 +22,24 @@ Just go to Terminal Emulator and then type:
 And then it'll present you with a menu that is pretty simple and easy to work with.
 
 ### Changelog
-v0.1 
-- Initial Release
-v0.2 
-- post-fs-data.sh and service.sh is additionally used on setting properties
-v0.3 
-- post-fs-data.sh and service.sh now reads from system.prop
-v0.3.1 
-- fixed typo in post-fs-data.sh and service.sh
-v0.4 
-- Now has a UI in Terminal Emulator (how to use is in the OP)
-- Default compiler filter is speed
-- Automatically wipes dalvik-cache after flashing
-v0.5 
-- Added more properties
-- Does not overwrite saved filter every update
-- Removed post-fs-data.sh and service.sh
-v0.6 
-- Fixed bootloop issues
+#### v0.1 
+* Initial Release
+#### v0.2 
+* post-fs-data.sh and service.sh is additionally used on setting properties
+#### v0.3 
+* post-fs-data.sh and service.sh now reads from system.prop
+#### v0.3.1 
+* fixed typo in post-fs-data.sh and service.sh
+#### v0.4 
+* Now has a UI in Terminal Emulator (how to use is in the OP)
+* Default compiler filter is speed
+* Automatically wipes dalvik-cache after flashing
+#### v0.5 
+* Added more properties
+* Does not overwrite saved filter every update
+* Removed post-fs-data.sh and service.sh
+#### v0.6 
+* Fixed bootloop issues
 
 [More info about this topic here](https://source.android.com/devices/tech/dalvik/configure)
 
