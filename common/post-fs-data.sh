@@ -16,7 +16,13 @@ grep_prop() {
   cat $FILES 2>/dev/null | sed -n "$REGEX" | head -n 1
 }
 
-API=`grep_prop ro.build.version.sdk`
-if [ $API -gt 24 ]; then
+API=$(grep_prop ro.build.version.sdk)
+ram=$(/data/magisk/busybox free -m | grep 'Mem:' | awk '{print $2}')
+if [ $API -ge 25 ]; then
   resetprop pm.dexopt.bg-dexopt everything
+  if [ $ram -le 1024 ]; then
+    resetprop dalvik.vm.dex2oat-swap true
+  else
+    resetprop dalvik.vm.dex2oat-swap false
+  fi
 fi
