@@ -17,9 +17,14 @@ In L, dex2oat takes a variety of --compiler-filter options to control how it com
 ### Preference
 
 You can change the default compiler filter with the one you prefer (or want to experiment with).
-Just go to Terminal Emulator and then type:
+Just go to [Terminal Emulator](https://play.google.com/store/apps/details?id=jackpal.androidterm) and then type:
+
 	art_magisk
+![art_magisk](http://i.imgur.com/1HmveXF.png)
+
 And then it'll present you with a menu that is pretty simple and easy to work with.
+![art_magisk menu](http://i.imgur.com/OCME41l.png)
+
 
 ### Changelog
 #### v0.1 
