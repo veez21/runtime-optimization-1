@@ -45,6 +45,9 @@ And then it'll present you with a menu that is pretty simple and easy to work wi
 * Removed post-fs-data.sh and service.sh
 #### v0.6 
 * Fixed bootloop issues
+#### v0.7
+* Added pm.dexopt.bg-dexopt for 7.1+
+* Added dalvik.vm.dex2oat-swap for 7.1+ (enabled for low mem devices, disabled if not)
 
 
 [More info about this topic here](https://source.android.com/devices/tech/dalvik/configure)
