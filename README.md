@@ -48,6 +48,8 @@ And then it'll present you with a menu that is pretty simple and easy to work wi
 #### v0.7
 * Added pm.dexopt.bg-dexopt for 7.1+
 * Added dalvik.vm.dex2oat-swap for 7.1+ (enabled for low mem devices, disabled if not)
+#### v0.7.5
+* Added dalvik.vm.dex2oat-thread_count which will "supposedly" make app installation faster
 
 
 [More info about this topic here](https://source.android.com/devices/tech/dalvik/configure)
