@@ -12,4 +12,5 @@ dalvik.vm.dex2oat-filter=speed
 dalvik.vm.check-dex-sum=false
 dalvik.vm.checkjni=false
 dalvik.vm.execution-mode=int:jit
+dalvik.vm.dex2oat-thread_count=4
 ## Don't touch me :P
