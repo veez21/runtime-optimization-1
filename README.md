@@ -53,3 +53,5 @@ And then it'll present you with a menu that is pretty simple and easy to work wi
 [More info about this topic here](https://source.android.com/devices/tech/dalvik/configure)
 
 [See XDA Thread](https://forum.xda-developers.com/apps/magisk/module-android-runtime-optimization-t3596559)
+
+[Non-Magisk](https://www.androidfilehost.com/?w=files&flid=178198)
