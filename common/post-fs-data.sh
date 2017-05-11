@@ -16,13 +16,39 @@ grep_prop() {
   cat $FILES 2>/dev/null | sed -n "$REGEX" | head -n 1
 }
 
+ver=$(grep_prop version $MODDIR/module.prop)
+
+log_print() {
+  LOGFILE=/cache/magisk.log
+  echo "ART Optimizer${ver}: $@"
+  echo "ART Optimizer${ver}: $@" >> $LOGFILE
+  log -p i -t "ART Optimizer${ver}" "$@"
+}
+
 API=$(grep_prop ro.build.version.sdk)
 ram=$(/data/magisk/busybox free -m | grep 'Mem:' | awk '{print $2}')
+filter=$(grep_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop)
+
+log_print "Compiler Filter set to: $filter"
+log_print "API: $API"
+log_print "RAM: $ram"
+
+for i in $(cat $MODDIR/module.prop | grep "[a-zA-Z0-9]=[a-zA-Z0-9]"); do
+  echo $i | grep "#" >dev/null 2>dev/null || log_print "${i#*=} -> ${i%=*}"
+done
+
 if [ $API -ge 25 ]; then
-  resetprop pm.dexopt.bg-dexopt everything
+  resetprop pm.dexopt.bg-dexopt $filter
+  log_print "pm.dexopt.bg-dexopt -> $filter"
   if [ $ram -le 1024 ]; then
     resetprop dalvik.vm.dex2oat-swap true
+	log_print "dalvik.vm.dex2oat-swap -> true"
+	resetprop dalvik.vm.heaptargetutilization 0.9
+	log_print "dalvik.vm.heaptargetutilization -> 0.9"
   else
     resetprop dalvik.vm.dex2oat-swap false
+	log_print "dalvik.vm.dex2oat-swap -> false"
+	resetprop dalvik.vm.heaptargetutilization 0.75
+	log_print "dalvik.vm.heaptargetutilization -> 0.75"
   fi
 fi
