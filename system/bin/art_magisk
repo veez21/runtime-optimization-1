@@ -57,6 +57,13 @@ runl() {
   return $?
 }
 
+# log_print "<log>"
+log() {
+  LOGFILE=/cache/magisk.log
+  echo "$MODTITLE ${ver}: $@" >> $LOGFILE
+  log -p i -t "ART Optimizer${ver}" "$@"
+}
+
 #=========================== Default Variables
 # > Stuff here is used for some other stuff
 # > Edit only if necessary!

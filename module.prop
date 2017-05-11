@@ -1,5 +1,5 @@
 id=runtime-optimization
-name=Android Runtime Optimization
+name=ART Optimization
 version=v0.7.5
 versionCode=9
 author=veez21

@@ -20,8 +20,8 @@ ver=$(grep_prop version $MODDIR/module.prop)
 
 log_print() {
   LOGFILE=/cache/magisk.log
-  echo "ART Optimizer${ver}: $@"
-  echo "ART Optimizer${ver}: $@" >> $LOGFILE
+  echo "ART Optimization${ver}: $@"
+  echo "ART Optimization${ver}: $@" >> $LOGFILE
   log -p i -t "ART Optimizer${ver}" "$@"
 }
 
