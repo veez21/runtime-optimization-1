@@ -30,6 +30,7 @@ ram=$(/data/magisk/busybox free -m | grep 'Mem:' | awk '{print $2}')
 filter=$(grep_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop)
 
 log_print "Compiler Filter set to: $filter"
+log_print "ROM: $(grep_prop ro.build.display.id)"
 log_print "API: $API"
 log_print "RAM: $ram"
 
