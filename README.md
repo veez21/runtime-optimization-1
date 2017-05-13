@@ -50,6 +50,11 @@ And then it'll present you with a menu that is pretty simple and easy to work wi
 * Added dalvik.vm.dex2oat-swap for 7.1+ (enabled for low mem devices, disabled if not)
 #### v0.7.5
 * Added dalvik.vm.dex2oat-thread_count which will "supposedly" make app installation faster
+#### v0.8
+* Added dalvik.vm.heaptargetutilization
+* Logging to /cache/magisk.log added
+#### v0.8.1
+* Fix logging and setting properties
 
 
 [More info about this topic here](https://source.android.com/devices/tech/dalvik/configure)
