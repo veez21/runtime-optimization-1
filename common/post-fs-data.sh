@@ -7,13 +7,9 @@ MODDIR=${0%/*}
 # More info in the main Magisk thread
 
 grep_prop() {
-  REGEX="s/^$1=//p"
-  shift
-  FILES=$@
-  if [ -z "$FILES" ]; then
-    FILES='/system/build.prop'
-  fi
-  cat $FILES 2>/dev/null | sed -n "$REGEX" | head -n 1
+  _prop=$(grep "$1=" $2)
+  echo ${_prop#*=}
+  unset _prop
 }
 
 ver=$(grep_prop version $MODDIR/module.prop)
@@ -25,7 +21,7 @@ log_print() {
   log -p i -t "ART Optimizer${ver}" "$@"
 }
 
-API=$(grep_prop ro.build.version.sdk)
+API=$(grep_prop ro.build.version.sdk /system/build.prop)
 ram=$(/data/magisk/busybox free -m | grep 'Mem:' | awk '{print $2}')
 filter=$(grep_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop)
 
@@ -34,7 +30,7 @@ log_print "ROM: $(grep_prop ro.build.display.id)"
 log_print "API: $API"
 log_print "RAM: $ram"
 
-for i in $(cat $MODDIR/module.prop | grep "[a-zA-Z0-9]=[a-zA-Z0-9]"); do
+for i in $(cat $MODDIR/system.prop | grep "[a-zA-Z0-9]=[a-zA-Z0-9]"); do
   echo $i | grep "#" >dev/null 2>dev/null || log_print "${i#*=} -> ${i%=*}"
 done
 
