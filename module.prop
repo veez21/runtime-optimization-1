@@ -1,7 +1,7 @@
 id=runtime-optimization
-name=Android Runtime Optimization
-version=v0.7.5
-versionCode=9
+name=ART Optimization
+version=v0.8
+versionCode=10
 author=veez21
-description=Android Lollipop includes a new virtual machine called ART (Android Runtime.) ART uses AOT (ahead-of-time) compilation into native code, which performs better than JIT (just-in-time) compilation into bytecode. See XDA thread for more information.
+description=Optimizes ART (Android Runtime) by setting build properties. See XDA thread for more information. (NOTE: DOWNLOAD THE ZIP FROM HERE THEN INSTALL IN RECOVERY)
 template=3
