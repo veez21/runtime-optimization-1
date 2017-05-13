@@ -16,9 +16,9 @@ ver=$(grep_prop version $MODDIR/module.prop)
 
 log_print() {
   LOGFILE=/cache/magisk.log
-  echo "ART Optimization${ver}: $@"
-  echo "ART Optimization${ver}: $@" >> $LOGFILE
-  log -p i -t "ART Optimizer${ver}" "$@"
+  echo "ART Optimization ${ver}: $@"
+  echo "ART Optimization ${ver}: $@" >> $LOGFILE
+  log -p i -t "ART Optimizer ${ver}" "$@"
 }
 
 API=$(grep_prop ro.build.version.sdk /system/build.prop)
@@ -26,12 +26,12 @@ ram=$(/data/magisk/busybox free -m | grep 'Mem:' | awk '{print $2}')
 filter=$(grep_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop)
 
 log_print "Compiler Filter set to: $filter"
-log_print "ROM: $(grep_prop ro.build.display.id)"
+log_print "ROM: $(grep_prop ro.build.display.id /system/build.prop)"
 log_print "API: $API"
 log_print "RAM: $ram"
 
 for i in $(cat $MODDIR/system.prop | grep "[a-zA-Z0-9]=[a-zA-Z0-9]"); do
-  echo $i | grep "#" >dev/null 2>dev/null || log_print "${i#*=} -> ${i%=*}"
+  (echo $i | grep "#" >dev/null 2>dev/null) || log_print "${i%=*} -> ${i#*=}"
 done
 
 if [ $API -ge 25 ]; then
