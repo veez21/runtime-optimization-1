@@ -7,22 +7,56 @@ MODDIR=${0%/*}
 # More info in the main Magisk thread
 
 grep_prop() {
-  REGEX="s/^$1=//p"
-  shift
-  FILES=$@
-  if [ -z "$FILES" ]; then
-    FILES='/system/build.prop'
-  fi
-  cat $FILES 2>/dev/null | sed -n "$REGEX" | head -n 1
+  _prop=$(grep "$1=" $2)
+  echo ${_prop#*=}
+  unset _prop
 }
 
-API=$(grep_prop ro.build.version.sdk)
-ram=$(/data/magisk/busybox free -m | grep 'Mem:' | awk '{print $2}')
-if [ $API -ge 25 ]; then
-  resetprop pm.dexopt.bg-dexopt everything
-  if [ $ram -le 1024 ]; then
-    resetprop dalvik.vm.dex2oat-swap true
+ver=$(grep_prop version $MODDIR/module.prop)
+
+log_print() {
+  LOGFILE=/cache/magisk.log
+  echo "ART Optimization ${ver}: $@"
+  echo "ART Optimization ${ver}: $@" >> $LOGFILE
+  log -p i -t "ART Optimizer ${ver}" "$@"
+}
+
+set_prop() {
+  [ -n "$3" ] && prop=$3 || prop=$MODDIR/system.prop 
+  if (grep -q "$1=" $prop); then
+    sed -i "s/${1}=.*/${1}=${2}/g" $prop
   else
-    resetprop dalvik.vm.dex2oat-swap false
+    echo "${1}=${2}" >> $prop
+  fi
+  test -f /system/bin/setprop && setprop $1 $2
+  resetprop $1 $2
+}
+
+API=$(grep_prop ro.build.version.sdk /system/build.prop)
+ram=$(/data/magisk/busybox free -m | grep 'Mem:' | awk '{print $2}')
+filter=$(grep_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop)
+
+log_print "Compiler Filter set to: $filter"
+log_print "ROM: $(grep_prop ro.build.display.id /system/build.prop)"
+log_print "API: $API"
+log_print "RAM: $ram"
+
+for i in $(cat $MODDIR/system.prop | grep "[a-zA-Z0-9]=[a-zA-Z0-9]"); do
+  (echo $i | grep "#" >dev/null 2>dev/null) || log_print "${i%=*} -> ${i#*=}"
+done
+
+if [ $API -ge 25 ]; then
+  set_prop pm.dexopt.bg-dexopt $filter
+  log_print "pm.dexopt.bg-dexopt -> $filter"
+  if [ $ram -le 1024 ]; then
+    set_prop dalvik.vm.dex2oat-swap true
+	log_print "dalvik.vm.dex2oat-swap -> true"
+	set_prop dalvik.vm.heaptargetutilization 0.9
+	log_print "dalvik.vm.heaptargetutilization -> 0.9"
+  else
+    set_prop dalvik.vm.dex2oat-swap false
+	log_print "dalvik.vm.dex2oat-swap -> false"
+	set_prop dalvik.vm.heaptargetutilization 0.75
+	log_print "dalvik.vm.heaptargetutilization -> 0.75"
   fi
 fi
