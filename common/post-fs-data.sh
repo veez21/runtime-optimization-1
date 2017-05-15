@@ -30,10 +30,10 @@ set_prop() {
     sed -i "s/${1}=.*/${1}=${2}/g" $prop
   else
     echo "${1}=${2}" >> $prop
+    log_print "${1} -> ${2}"
   fi
   test -f /system/bin/setprop && setprop $1 $2
   resetprop $1 $2
-  log_print "${1} -> ${2}"
 }
 
 API=$(grep_prop ro.build.version.sdk /system/build.prop)
