@@ -58,7 +58,7 @@ log_print "RAM: $ram"
 
 # Remove conditional properties
 log_print "Removing conditional properties from system.prop"
-for i in "$to_be_removed"; do
+for i in $to_be_removed; do
   if (grep -q "$i=" $MODDIR/system.prop); then
     sed -i 's/${i}=.*//g' $MODDIR/system.prop
     log_print "${i}: removed"
