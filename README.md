@@ -27,34 +27,39 @@ And then it'll present you with a menu that is pretty simple and easy to work wi
 
 
 ### Changelog
-#### v0.1 
-* Initial Release
-#### v0.2 
-* post-fs-data.sh and service.sh is additionally used on setting properties
-#### v0.3 
-* post-fs-data.sh and service.sh now reads from system.prop
-#### v0.3.1 
-* fixed typo in post-fs-data.sh and service.sh
-#### v0.4 
-* Now has a UI in Terminal Emulator (how to use is in the OP)
-* Default compiler filter is speed
-* Automatically wipes dalvik-cache after flashing
+#### v0.8.5
+* Code Optimization
+* Moved dalvik.vm.heaptargetutilization to be used on Android 5.0+
+#### v0.8.2
+* Fix more problems
+#### v0.8.1
+* Fix logging and setting properties
+#### v0.8
+* Added dalvik.vm.heaptargetutilization
+* Logging to /cache/magisk.log added
+#### v0.7.5
+* Added dalvik.vm.dex2oat-thread_count which will "supposedly" make app installation faster
+#### v0.7
+* Added pm.dexopt.bg-dexopt for 7.1+
+* Added dalvik.vm.dex2oat-swap for 7.1+ (enabled for low mem devices, disabled if not)
+#### v0.6 
+* Fixed bootloop issues
 #### v0.5 
 * Added more properties
 * Does not overwrite saved filter every update
 * Removed post-fs-data.sh and service.sh
-#### v0.6 
-* Fixed bootloop issues
-#### v0.7
-* Added pm.dexopt.bg-dexopt for 7.1+
-* Added dalvik.vm.dex2oat-swap for 7.1+ (enabled for low mem devices, disabled if not)
-#### v0.7.5
-* Added dalvik.vm.dex2oat-thread_count which will "supposedly" make app installation faster
-#### v0.8
-* Added dalvik.vm.heaptargetutilization
-* Logging to /cache/magisk.log added
-#### v0.8.1
-* Fix logging and setting properties
+#### v0.4 
+* Now has a UI in Terminal Emulator (how to use is in the OP)
+* Default compiler filter is speed
+* Automatically wipes dalvik-cache after flashing
+#### v0.3.1 
+* fixed typo in post-fs-data.sh and service.sh
+#### v0.3 
+* post-fs-data.sh and service.sh now reads from system.prop
+#### v0.2 
+* post-fs-data.sh and service.sh is additionally used on setting properties
+#### v0.1 
+* Initial Release
 
 
 [More info about this topic here](https://source.android.com/devices/tech/dalvik/configure)

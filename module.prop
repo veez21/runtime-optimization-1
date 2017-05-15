@@ -1,7 +1,7 @@
 id=runtime-optimization
 name=ART Optimization
-version=v0.8.2
-versionCode=12
+version=v0.8.5
+versionCode=13
 author=veez21
-description=Optimizes ART (Android Runtime) by setting build properties. See XDA thread for more information. (NOTE: DOWNLOAD THE ZIP FROM HERE THEN INSTALL IN RECOVERY)
+description=Optimizes ART (Android Runtime) by setting build properties. See XDA thread for more information. (NOTE: WHEN UPDATING, JUST DOWNLOAD THE ZIP AND MANUALLY FLASH THROUGH RECOVERY)
 template=3
