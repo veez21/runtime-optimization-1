@@ -8,6 +8,7 @@ MODDIR=${0%/*}
 
 grep_prop() {
   _prop=$(grep "$1=" $2)
+  [ $? -gt 0 ] && return 1
   echo ${_prop#*=}
   unset _prop
 }
