@@ -46,7 +46,7 @@ log_print "API: $API"
 log_print "RAM: $ram"
 
 for i in $(cat $MODDIR/system.prop | grep "[a-zA-Z0-9]=[a-zA-Z0-9]" | sed 's/ /_/g'); do
-  [[ $(echo $i | grep "#_" >dev/null 2>dev/null) ]] || log_print "${i%=*} -> ${i#*=}"
+  [[ $(echo $i | grep "#_") ]] || log_print "${i%=*} -> ${i#*=}"
 done
 
 if [ $ram -le 1024 ]; then
