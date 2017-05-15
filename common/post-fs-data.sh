@@ -32,7 +32,7 @@ set_prop() {
     sed -i "s/${1}=.*/${1}=${2}/g" $prop
   else
     echo "${1}=${2}" >> $prop
-    log_print "${1} -> ${2}"
+    log_print " ${1} -> ${2}"
   fi
   test -f /system/bin/setprop && setprop $1 $2
   resetprop $1 $2
@@ -51,24 +51,24 @@ filter=$(grep_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop)
 rom=$(grep_prop ro.build.display.id /system/build.prop) || rom="error"
 
 # Log Info
-log_print "Compiler Filter set to: $filter"
-log_print "ROM: $rom"
-log_print "API: $API"
-log_print "RAM: $ram"
+log_print "** Compiler Filter: $filter"
+log_print "** ROM: $rom"
+log_print "** API: $API"
+log_print "** RAM: $ram"
 
 # Remove conditional properties
-log_print "Removing conditional properties from system.prop"
+log_print "* Removing conditional properties from system.prop"
 for i in $to_be_removed; do
   if (grep -q "$i=" $MODDIR/system.prop); then
     sed -i 's/${i}=.*//g' $MODDIR/system.prop
-    log_print "${i}: removed"
+    log_print " ${i}: removed"
   fi
 done
 
 # Set properties
-log_print "Setting properties through resetprop"
+log_print "* Setting properties through resetprop"
 for i in $(cat $MODDIR/system.prop | grep "[a-zA-Z0-9]=[a-zA-Z0-9]" | sed 's/ /_/g'); do
-  [[ $(echo $i | grep "#_") ]] || log_print "${i%=*} -> ${i#*=}"
+  [[ $(echo $i | grep "#_") ]] || log_print " ${i%=*} -> ${i#*=}"
 done
 
 set_prop dalvik.vm.dex2oat-filter $filter
