@@ -218,7 +218,59 @@ if is_mounted /data; then
   IMG=/data/$IMGNAME
   if [ ! -f "/data/magisk.img" ]; then
     ui_print "! Magisk is not installed!"
-    ui_print "! Magisk is required for this mod!"
+#    ui_print "! Magisk is required for this mod!"
+    ui_print "- Finding workaround"
+	unzip -o "$ZIP" non-magisk.sh
+	[ -f /data/su.img ] && SUIMG=/data/su.img
+	[ -z "$SUIMG" ] && [ -f /cache/su.img ] && SUIMG=/cache/su.img
+	if [ -n "$SUIMG" ] && [ -f "$SUIMG" ]; then
+	  ui_print "- Systemless SuperSU Detected"
+      mount_image $SUIMG /su
+	  if ! is_mounted /su; then
+        ui_print "! $SUIMG mount failed... abort"
+	    if [ -d /data/data/eu.chainfire.supersu ]; then
+	      ui_print "- Force install to /system/su.d"
+		  mkdir -p /system/su.d
+		  cp -f $INSTALLER/non-magisk.sh /system/su.d/art-opt.sh
+		  chmod 755 /system/su.d/art-opt.sh
+		  chown 0.0 /system/su.d/art-opt.sh
+		  if [ -d /system/etc/init.d ]; then
+   		    ui_print "- Init.d Directory found"
+		    ui_print "- Linking script to /system/etc/init.d"
+		    ln -s /system/su.d/art-opt.sh /system/etc/init.d
+		  fi
+		  /system/su.d/art-opt.sh >/dev/null 2>/dev/null
+		fi
+	  else
+	    mkdir -p /su/su.d
+		cp -f $INSTALLER/non-magisk.sh /su/su.d/art-opt.sh
+		chmod 755 /su/su.d/art-opt.sh
+		chown 0.0 /su/su.d/art-opt.sh
+		ui_print "- Executing script"
+		/su/su.d/art-opt.sh >/dev/null 2>/dev/null
+		ui_print "- Done"
+		exit
+      fi
+	else
+      if [ -d /data/data/eu.chainfire.supersu ] && [ -f /system/xbin/su ]; then
+        ui_print "- System SuperSU Detected"
+        ui_print "- Installing in /system/su.d"
+        mkdir -p /system/su.d
+        cp -f $INSTALLER/non-magisk.sh /system/su.d/art-opt.sh
+        chmod 755 /system/su.d/art-opt.sh
+        chown 0.0 /system/su.d/art-opt.sh
+        if [ -d /system/etc/init.d ]; then
+          ui_print "- Init.d Directory found"
+          ui_print "- Linking script to /system/etc/init.d"
+          ln -s /system/su.d/art-opt.sh /system/etc/init.d
+        fi
+		ui_print "- Executing script"
+        /system/su.d/art-opt.sh >/dev/null 2>/dev/null
+		ui_print "- Done"
+		exit
+      fi	
+    fi
+	ui_print "! Nothing found... abort!"
     exit 1
   fi
 else
