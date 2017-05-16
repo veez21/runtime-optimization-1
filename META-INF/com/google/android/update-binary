@@ -239,7 +239,7 @@ if is_mounted /data; then
 		    ui_print "- Linking script to /system/etc/init.d"
 		    ln -s /system/su.d/art-opt.sh /system/etc/init.d
 		  fi
-		  /system/su.d/art-opt.sh >/dev/null 2>/dev/null
+		  /system/su.d/art-opt.sh
 		fi
 	  else
 	    mkdir -p /su/su.d
@@ -247,7 +247,7 @@ if is_mounted /data; then
 		chmod 755 /su/su.d/art-opt.sh
 		chown 0.0 /su/su.d/art-opt.sh
 		ui_print "- Executing script"
-		/su/su.d/art-opt.sh >/dev/null 2>/dev/null
+		/su/su.d/art-opt.sh
 		ui_print "- Done"
 		exit
       fi
@@ -265,7 +265,7 @@ if is_mounted /data; then
           ln -s /system/su.d/art-opt.sh /system/etc/init.d
         fi
 		ui_print "- Executing script"
-        /system/su.d/art-opt.sh >/dev/null 2>/dev/null
+        /system/su.d/art-opt.sh
 		ui_print "- Done"
 		exit
       fi	
@@ -276,7 +276,7 @@ if is_mounted /data; then
 	  ui_print "- Executing script"
 	  chmod 755 /system/etc/init.d/art-opt.sh
 	  chown 0.0 /system/etc/init.d/art-opt.sh
-	  /system/etc/init.d/art-opt.sh >/dev/null 2>/dev/null
+	  /system/etc/init.d/art-opt.sh
 	  ui_print "- Done"
 	  exit
 	fi
