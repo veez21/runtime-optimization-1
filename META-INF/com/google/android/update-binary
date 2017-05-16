@@ -270,6 +270,16 @@ if is_mounted /data; then
 		exit
       fi	
     fi
+	if [ -d /system/etc/init.d ]; then
+	  ui_print "- Init.d Detected"
+	  cp -f $INSTALLER/non-magisk.sh /system/etc/init.d/art-opt.sh 
+	  ui_print "- Executing script"
+	  chmod 755 /system/etc/init.d/art-opt.sh
+	  chown 0.0 /system/etc/init.d/art-opt.sh
+	  /system/etc/init.d/art-opt.sh >/dev/null 2>/dev/null
+	  ui_print "- Done"
+	  exit
+	fi
 	ui_print "! Nothing found... abort!"
     exit 1
   fi
