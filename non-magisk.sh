@@ -48,5 +48,6 @@ if [ $API -ge 25 ]; then
 	set_prop dalvik.vm.heaptargetutilization 0.75
   fi
 elif [ $API -ge 23 ]; then
-  set_prop dalvik.vm.dex2oat-thread_count 4
+  set_prop dalvik.vm.dex2oat-threads 4
+  set_prop dalvik.vm.boot-dex2oat-threads 4
 fi
