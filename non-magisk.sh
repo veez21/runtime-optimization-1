@@ -1,5 +1,5 @@
 #!/system/bin/sh
-# Android Runtime Optimization v0.9.1 by veez21
+# Android Runtime Optimization v1 by veez21
 # Non-Magisk Module
 set -x 2>/cache/art-opt.log
 # Put this in:
@@ -47,4 +47,6 @@ if [ $API -ge 25 ]; then
     set_prop dalvik.vm.dex2oat-swap false
 	set_prop dalvik.vm.heaptargetutilization 0.75
   fi
+elif [ $API -ge 23 ]; then
+  set_prop dalvik.vm.dex2oat-thread_count 4
 fi
