@@ -84,4 +84,6 @@ if [ $API -ge 25 ] || [ $API == "error" ]; then
   else
     set_prop dalvik.vm.dex2oat-swap false
   fi
+elif [ $API -ge 23 ] || [ $API == "error" ]; then
+  set_prop dalvik.vm.dex2oat-thread_count 4  
 fi

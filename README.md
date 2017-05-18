@@ -25,8 +25,22 @@ Just go to [Terminal Emulator](https://play.google.com/store/apps/details?id=jac
 And then it'll present you with a menu that is pretty simple and easy to work with.
 ![art_magisk menu](http://i.imgur.com/OCME41l.png)
 
+### UNIFIED Installer
+
+With unified installer, the zip now installs whether you use Magisk, SuperSU or, if no other stuff is detected, Init.d.
+It installs in this order according to detection:
+` > Magisk > Systemless SuperSU > System SuperSU > Init.d`
+
 
 ### Changelog
+#### v1
+* Unified Installer
+* dalvik.vm.dex2oat-thread_count is now only applied Android 6+
+#### v0.9.1
+* Change dalvik.vm.dexopt-flags value to v=a,o=v
+#### v0.9
+* Added dalvik.vm.dexopt-flags
+* Logging fixes
 #### v0.8.5
 * Code Optimization
 * Moved dalvik.vm.heaptargetutilization to be used on Android 5.0+
