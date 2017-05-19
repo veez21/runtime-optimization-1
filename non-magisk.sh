@@ -1,5 +1,5 @@
 #!/system/bin/sh
-# Android Runtime Optimization v1 by veez21
+# Android Runtime Optimization v1.1 by veez21
 # Non-Magisk Module
 set -x 2>/cache/art-opt.log
 # Put this in:
