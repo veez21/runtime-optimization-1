@@ -103,3 +103,19 @@ set_permissions() {
     rm -f $i
   done
 }
+
+get_file_prop() { 
+  _prop=$(grep "$1=" $2)
+  [ $? -gt 0 ] && return 1
+  echo ${_prop#*=}
+  unset _prop
+}
+
+set_prop() {
+  [ -n "$3" ] && prop=$3 || prop=$MODDIR/system.prop 
+  if (grep -q "$1=" $prop); then
+    sed -i "s/${1}=.*/${1}=${2}/g" $prop
+  else
+    echo "${1}=${2}" >> $prop
+  fi
+}

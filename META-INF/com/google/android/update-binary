@@ -218,7 +218,6 @@ if is_mounted /data; then
   IMG=/data/$IMGNAME
   if [ ! -f "/data/magisk.img" ]; then
     ui_print "! Magisk is not installed!"
-#    ui_print "! Magisk is required for this mod!"
     ui_print "- Finding workaround"
 	unzip -o "$ZIP" non-magisk.sh
 	[ -f /data/su.img ] && SUIMG=/data/su.img
@@ -244,9 +243,20 @@ if is_mounted /data; then
 		fi
 	  else
 	    mkdir -p /su/su.d
+		if [ -f /su/su.d/art-opt.sh ]; then
+		  ui_print "- Detecting previous compiler filter"
+		  prev=$(get_file_prop filter /su/su.d/art-opt.sh)
+		  if [ $? -gt 0 ]; then
+		    ui_print "! Variable error!"
+			prev=speed
+		  else
+		    ui_print "- $prev Detected"
+	      fi
+		fi
 		cp -f $INSTALLER/non-magisk.sh /su/su.d/art-opt.sh
 		chmod 755 /su/su.d/art-opt.sh
 		chown 0.0 /su/su.d/art-opt.sh
+		set_prop filter $prev /su/su.d/art-opt.sh
 		ui_print "- Executing script"
 		/su/su.d/art-opt.sh
 		ui_print "- Done"
@@ -257,10 +267,21 @@ if is_mounted /data; then
       if [ -d /data/data/eu.chainfire.supersu ] && [ -f /system/xbin/su ]; then
         ui_print "- System SuperSU Detected"
         ui_print "- Installing in /system/su.d"
+		if [ -f /system/su.d/art-opt.sh ]; then
+		  ui_print "- Detecting previous compiler filter"
+		  prev=$(get_file_prop filter /su/su.d/art-opt.sh)
+		  if [ $? -gt 0 ]; then
+		    ui_print "! Variable error!"
+			prev=speed
+		  else
+		    ui_print "- $prev Detected"
+	      fi
+		fi
         mkdir -p /system/su.d
         cp -f $INSTALLER/non-magisk.sh /system/su.d/art-opt.sh
         chmod 755 /system/su.d/art-opt.sh
         chown 0.0 /system/su.d/art-opt.sh
+		set_prop filter $prev /system/su.d/art-opt.sh
         if [ -d /system/etc/init.d ]; then
           ui_print "- Init.d Directory found"
           ui_print "- Linking script to /system/etc/init.d"
@@ -276,9 +297,20 @@ if is_mounted /data; then
 	if [ -d /system/etc/init.d ]; then
 	  ui_print "- Init.d Detected"
 	  cp -f $INSTALLER/non-magisk.sh /system/etc/init.d/art-opt.sh 
-	  ui_print "- Executing script"
 	  chmod 755 /system/etc/init.d/art-opt.sh
 	  chown 0.0 /system/etc/init.d/art-opt.sh
+      if [ -f /system/su.d/art-opt.sh ]; then
+		ui_print "- Detecting previous compiler filter"
+		prev=$(get_file_prop filter /su/su.d/art-opt.sh)
+		if [ $? -gt 0 ]; then
+		  ui_print "! Variable error!"
+		  prev=speed
+		else
+		  ui_print "- $prev Detected"
+	    fi
+	  fi
+	  set_prop filter $prev /system/etc/init.d/art-opt.sh
+	  ui_print "- Executing script"
 	  /system/etc/init.d/art-opt.sh
 	  ui_print "- Done"
 	  rm -rf /data/dalvik-cache/*
@@ -322,6 +354,10 @@ if ! is_mounted $MOUNTPATH; then
   exit 1
 fi
 
+if [ -f $MODPATH/system.prop ]; then
+  prev=$(get_file_prop dalvik.vm.image-dex2oat-filter $MODPATH/system.prop)
+fi
+
 # Create mod paths
 rm -rf $MODPATH 2>/dev/null
 mkdir -p $MODPATH
@@ -343,6 +379,7 @@ fi
 # prop files
 if $PROPFILE; then
   cp -af $INSTALLER/common/system.prop $MODPATH/system.prop
+  set_prop dalvik.vm.image-dex2oat-filter $prev $MODPATH/system.prop
 fi
 
 # Module info

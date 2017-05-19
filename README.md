@@ -33,6 +33,12 @@ It installs in this order according to detection:
 
 
 ### Changelog
+#### v1.1
+* Logging Improved
+* Saved compiler filter now survives updates on both Magisk and Non-Magisk (unless something prevents it to)
+* Moved dalvik.vm.dex2oat-thread_count back to system.prop
+* Add dalvik.vm.dex2oat-threads
+* Add dalvik.vm.boot-dex2oat-threads
 #### v1
 * Unified Installer
 * dalvik.vm.dex2oat-thread_count is now only applied Android 6+

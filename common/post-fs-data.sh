@@ -20,7 +20,6 @@ ver=$(grep_prop version $MODDIR/module.prop)
 
 log_print() {
   if ($LOG); then
-    echo "ART Optimization ${ver}: $@"
     echo "ART Optimization ${ver}: $@" >> /cache/magisk.log
     log -p i -t "ART Optimizer ${ver}" "$@"
   fi
@@ -32,7 +31,7 @@ set_prop() {
     sed -i "s/${1}=.*/${1}=${2}/g" $prop
   else
     echo "${1}=${2}" >> $prop
-    log_print " ${1} -> ${2}"
+    log_print "${1} -> ${2}"
   fi
   test -f /system/bin/setprop && setprop $1 $2
   resetprop $1 $2
@@ -61,14 +60,14 @@ log_print "* Removing conditional properties from system.prop"
 for i in $to_be_removed; do
   if (grep -q "$i=" $MODDIR/system.prop); then
     sed -i 's/${i}=.*//g' $MODDIR/system.prop
-    log_print " ${i}: removed"
+    log_print "${i}: removed"
   fi
 done
 
 # Set properties
 log_print "* Setting properties through resetprop"
 for i in $(cat $MODDIR/system.prop | grep "[a-zA-Z0-9]=[a-zA-Z0-9]" | sed 's/ /_/g'); do
-  [[ $(echo $i | grep "#_") ]] || log_print " ${i%=*} -> ${i#*=}"
+  [[ $(echo $i | grep "#_") ]] || log_print "${i%=*} -> ${i#*=}"
 done
 
 set_prop dalvik.vm.dex2oat-filter $filter
@@ -77,13 +76,14 @@ if [ $ram -le 1024 ]; then
 else
   set_prop dalvik.vm.heaptargetutilization 0.75
 fi
-if [ $API -ge 25 ] || [ $API == "error" ]; then
+if [ $API -ge 25 ]; then
   set_prop pm.dexopt.bg-dexopt $filter
   if [ $ram -le 1024 ]; then
     set_prop dalvik.vm.dex2oat-swap true
   else
     set_prop dalvik.vm.dex2oat-swap false
   fi
-elif [ $API -ge 23 ] || [ $API == "error" ]; then
-  set_prop dalvik.vm.dex2oat-thread_count 4  
+elif [ $API -ge 23 ]; then
+  set_prop dalvik.vm.dex2oat-threads 4
+  set_prop dalvik.vm.boot-dex2oat-threads 4
 fi
