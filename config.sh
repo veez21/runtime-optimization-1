@@ -104,12 +104,12 @@ set_permissions() {
   done
 }
 
-get_file_prop(  
+get_file_prop() { 
   _prop=$(grep "$1=" $2)
   [ $? -gt 0 ] && return 1
   echo ${_prop#*=}
   unset _prop
-)
+}
 
 set_prop() {
   [ -n "$3" ] && prop=$3 || prop=$MODDIR/system.prop 
