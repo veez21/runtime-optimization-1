@@ -87,3 +87,4 @@ elif [ $API -ge 23 ]; then
   set_prop dalvik.vm.dex2oat-threads 4
   set_prop dalvik.vm.boot-dex2oat-threads 4
 fi
+log_print "* Done"
