@@ -99,9 +99,6 @@ set_permissions() {
   # set_perm  $MODPATH/system/bin/dex2oat         0       2000    0755         u:object_r:dex2oat_exec:s0
   # set_perm  $MODPATH/system/lib/libart.so       0       0       0644
   set_perm $MODPATH/system/bin/art_magisk 0 0 0777
-  for i in  $(find /data/dalvik-cache -type f); do
-    rm -f $i
-  done
 }
 
 get_file_prop() { 

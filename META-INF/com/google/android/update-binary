@@ -239,7 +239,6 @@ if is_mounted /data; then
 		    ln -s /system/su.d/art-opt.sh /system/etc/init.d
 		  fi
 		  /system/su.d/art-opt.sh
-		  rm -rf /data/dalvik-cache/*
 		fi
 	  else
 	    mkdir -p /su/su.d
@@ -260,7 +259,6 @@ if is_mounted /data; then
 		ui_print "- Executing script"
 		/su/su.d/art-opt.sh
 		ui_print "- Done"
-		rm -rf /data/dalvik-cache/*
 		exit
       fi
 	else
@@ -290,7 +288,6 @@ if is_mounted /data; then
 		ui_print "- Executing script"
         /system/su.d/art-opt.sh
 		ui_print "- Done"
-		rm -rf /data/dalvik-cache/*
 		exit
       fi	
     fi
@@ -313,7 +310,6 @@ if is_mounted /data; then
 	  ui_print "- Executing script"
 	  /system/etc/init.d/art-opt.sh
 	  ui_print "- Done"
-	  rm -rf /data/dalvik-cache/*
 	  exit
 	fi
 	ui_print "! Nothing found... abort!"
@@ -423,4 +419,8 @@ if ! $BOOTMODE; then
 fi
 
 ui_print "- Done"
+ui_print "******************************"
+ui_print "*     FOR BEST RESULTS,      *"  
+ui_print "*     WIPE DALVIK-CACHE      *"
+ui_print "******************************"
 exit 0
