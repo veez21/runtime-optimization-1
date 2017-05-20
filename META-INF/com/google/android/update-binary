@@ -246,10 +246,10 @@ if is_mounted /data; then
 		  ui_print "- Detecting previous compiler filter"
 		  prev=$(get_file_prop filter /su/su.d/art-opt.sh)
 		  if [ $? -gt 0 ]; then
-		    ui_print "! Variable error!"
+		    ui_print "- --compiler-filter: speed"
 			prev=speed
 		  else
-		    ui_print "- $prev Detected"
+		    ui_print "- --compiler-filter: $prev"
 	      fi
 		fi
 		cp -f $INSTALLER/non-magisk.sh /su/su.d/art-opt.sh
@@ -269,10 +269,10 @@ if is_mounted /data; then
 		  ui_print "- Detecting previous compiler filter"
 		  prev=$(get_file_prop filter /su/su.d/art-opt.sh)
 		  if [ $? -gt 0 ]; then
-		    ui_print "! Variable error!"
+		    ui_print "- --compiler-filter: speed"
 			prev=speed
 		  else
-		    ui_print "- $prev Detected"
+		    ui_print "- --compiler-filter: $prev"
 	      fi
 		fi
         mkdir -p /system/su.d
@@ -300,10 +300,10 @@ if is_mounted /data; then
 		ui_print "- Detecting previous compiler filter"
 		prev=$(get_file_prop filter /su/su.d/art-opt.sh)
 		if [ $? -gt 0 ]; then
-		  ui_print "! Variable error!"
+		  ui_print "- --compiler-filter: speed"
 		  prev=speed
 		else
-		  ui_print "- $prev Detected"
+		  ui_print "- --compiler-filter: $prev"
 	    fi
 	  fi
 	  set_prop filter $prev /system/etc/init.d/art-opt.sh
@@ -352,6 +352,12 @@ fi
 
 if [ -f $MODPATH/system.prop ]; then
   prev=$(get_file_prop dalvik.vm.image-dex2oat-filter $MODPATH/system.prop)
+  if [ $? -eq 0 ]; then
+    ui_print "- --compiler-filter: $prev"
+  else
+    ui_print "- --compiler-filter: speed"
+	prev=speed
+  fi
 fi
 
 # Create mod paths
