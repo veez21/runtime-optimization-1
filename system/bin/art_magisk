@@ -109,7 +109,7 @@ echo "$div"
 
 echo ""
 echo "Current: ${W}$(getprop dalvik.vm.image-dex2oat-filter)${N}"
-if [ $(getprop dalvik.vm.image-dex2oat-filter) != $(get_file_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop) ]; then
+if [ "$(getprop dalvik.vm.image-dex2oat-filter)" != "$(get_file_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop)" ]; then
   echo "To be applied: ${Bl}$(get_file_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop)${N}"
 fi
 echo ""
