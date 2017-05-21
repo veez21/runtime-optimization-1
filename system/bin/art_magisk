@@ -170,9 +170,7 @@ if [ $(getprop dalvik.vm.image-dex2oat-filter) != $(get_file_prop dalvik.vm.imag
   runl echo -n "Wipe? < y | n> "
   runl read wipe
   if [ "$wipe" == y ]; then
-    for i in  $(find /data/dalvik-cache -type f); do
-      rm -f $i 2>>$LOG
-    done
+    rm -rf /data/dalvik-cache/* 2>>$LOG
 	echo "Reboot or your apps won't open..."
 	exit
   elif [ "$wipe" == n ]; then
