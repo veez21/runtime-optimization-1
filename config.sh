@@ -116,3 +116,10 @@ set_prop() {
     echo "${1}=${2}" >> $prop
   fi
 }
+
+message_wipe() {
+ui_print "******************************"
+ui_print "*     FOR BEST RESULTS,      *"  
+ui_print "*     WIPE DALVIK-CACHE      *"
+ui_print "******************************"
+}
