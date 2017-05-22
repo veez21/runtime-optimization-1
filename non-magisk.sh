@@ -46,7 +46,7 @@ for i in $to_be_removed; do
 done
 
 set_prop dalvik.vm.image-dex2oat-filter $filter
-set_prop dalvik.vm.dex2oat-filter $filter
+set_prop dalvik.vm.dex2oat-filter speed
 set_prop dalvik.vm.check-dex-sum false
 set_prop dalvik.vm.checkjni false
 set_prop dalvik.vm.execution-mode int:jit
