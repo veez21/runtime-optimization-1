@@ -33,6 +33,9 @@ It installs in this order according to detection:
 
 
 ### Changelog
+#### v1.2.5
+* Moved workaround installtion to config.sh, making it easier for me
+* dalvik.vm.dex2oat-filter will also change when selection a filter, again
 #### v1.2
 * Revert dalvik.vm.dex2oat-filter to speed
 * Removed dalvik-cache wiping during installation
