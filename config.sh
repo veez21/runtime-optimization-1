@@ -99,9 +99,6 @@ set_permissions() {
   # set_perm  $MODPATH/system/bin/dex2oat         0       2000    0755         u:object_r:dex2oat_exec:s0
   # set_perm  $MODPATH/system/lib/libart.so       0       0       0644
   set_perm $MODPATH/system/bin/art_magisk 0 0 0777
-  for i in  $(find /data/dalvik-cache -type f); do
-    rm -f $i
-  done
 }
 
 get_file_prop() { 
@@ -118,4 +115,11 @@ set_prop() {
   else
     echo "${1}=${2}" >> $prop
   fi
+}
+
+message_wipe() {
+ui_print "******************************"
+ui_print "*     FOR BEST RESULTS,      *"  
+ui_print "*     WIPE DALVIK-CACHE      *"
+ui_print "******************************"
 }

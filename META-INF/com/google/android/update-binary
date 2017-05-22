@@ -188,6 +188,8 @@ ui_print "******************************"
 ui_print "Powered by Magisk (@topjohnwu)"
 ui_print "******************************"
 
+UPDATE=false
+
 ui_print "- Mounting /system(rw), /vendor(ro), /data, /cache"
 mount /system 2>/dev/null
 mount -o ro /vendor 2>/dev/null
@@ -239,7 +241,6 @@ if is_mounted /data; then
 		    ln -s /system/su.d/art-opt.sh /system/etc/init.d
 		  fi
 		  /system/su.d/art-opt.sh
-		  rm -rf /data/dalvik-cache/*
 		fi
 	  else
 	    mkdir -p /su/su.d
@@ -247,10 +248,11 @@ if is_mounted /data; then
 		  ui_print "- Detecting previous compiler filter"
 		  prev=$(get_file_prop filter /su/su.d/art-opt.sh)
 		  if [ $? -gt 0 ]; then
-		    ui_print "! Variable error!"
+		    ui_print "- --compiler-filter: speed"
 			prev=speed
 		  else
-		    ui_print "- $prev Detected"
+		    ui_print "- --compiler-filter: $prev"
+			UPDATE=true
 	      fi
 		fi
 		cp -f $INSTALLER/non-magisk.sh /su/su.d/art-opt.sh
@@ -260,7 +262,7 @@ if is_mounted /data; then
 		ui_print "- Executing script"
 		/su/su.d/art-opt.sh
 		ui_print "- Done"
-		rm -rf /data/dalvik-cache/*
+		message_wipe
 		exit
       fi
 	else
@@ -271,10 +273,11 @@ if is_mounted /data; then
 		  ui_print "- Detecting previous compiler filter"
 		  prev=$(get_file_prop filter /su/su.d/art-opt.sh)
 		  if [ $? -gt 0 ]; then
-		    ui_print "! Variable error!"
+		    ui_print "- --compiler-filter: speed"
 			prev=speed
 		  else
-		    ui_print "- $prev Detected"
+		    ui_print "- --compiler-filter: $prev"
+			UPDATE=true
 	      fi
 		fi
         mkdir -p /system/su.d
@@ -290,7 +293,7 @@ if is_mounted /data; then
 		ui_print "- Executing script"
         /system/su.d/art-opt.sh
 		ui_print "- Done"
-		rm -rf /data/dalvik-cache/*
+		message_wipe
 		exit
       fi	
     fi
@@ -303,17 +306,18 @@ if is_mounted /data; then
 		ui_print "- Detecting previous compiler filter"
 		prev=$(get_file_prop filter /su/su.d/art-opt.sh)
 		if [ $? -gt 0 ]; then
-		  ui_print "! Variable error!"
+		  ui_print "- --compiler-filter: speed"
 		  prev=speed
 		else
-		  ui_print "- $prev Detected"
+		  ui_print "- --compiler-filter: $prev"
+		  UPDATE=true
 	    fi
 	  fi
 	  set_prop filter $prev /system/etc/init.d/art-opt.sh
 	  ui_print "- Executing script"
 	  /system/etc/init.d/art-opt.sh
 	  ui_print "- Done"
-	  rm -rf /data/dalvik-cache/*
+	  message_wipe
 	  exit
 	fi
 	ui_print "! Nothing found... abort!"
@@ -356,6 +360,13 @@ fi
 
 if [ -f $MODPATH/system.prop ]; then
   prev=$(get_file_prop dalvik.vm.image-dex2oat-filter $MODPATH/system.prop)
+  if [ $? -eq 0 ]; then
+    ui_print "- --compiler-filter: $prev"
+  else
+    ui_print "- --compiler-filter: speed"
+	prev=speed
+  fi
+  UPDATE=true
 fi
 
 # Create mod paths
@@ -423,4 +434,5 @@ if ! $BOOTMODE; then
 fi
 
 ui_print "- Done"
+message_wipe
 exit 0

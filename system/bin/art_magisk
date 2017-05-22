@@ -109,7 +109,7 @@ echo "$div"
 
 echo ""
 echo "Current: ${W}$(getprop dalvik.vm.image-dex2oat-filter)${N}"
-if [ $(getprop dalvik.vm.image-dex2oat-filter) != $(get_file_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop) ]; then
+if [ "$(getprop dalvik.vm.image-dex2oat-filter)" != "$(get_file_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop)" ]; then
   echo "To be applied: ${Bl}$(get_file_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop)${N}"
 fi
 echo ""
@@ -120,7 +120,7 @@ echo " 3 - ${W}balanced${N}"
 echo " 4 - ${W}space${N}"
 echo " 5 - ${W}interpret-only${N}"
 echo " 6 - ${W}verify-none${N}"
-echo " xda - ${Bl}See XDA Thread for more information${N}"
+echo " xda - ${Bl}See XDA Thread for more information and support/help${N}"
 echo ""
 echo " 0 - ${Bl}Exit${N}"
 echo ""
@@ -170,9 +170,7 @@ if [ $(getprop dalvik.vm.image-dex2oat-filter) != $(get_file_prop dalvik.vm.imag
   runl echo -n "Wipe? < y | n> "
   runl read wipe
   if [ "$wipe" == y ]; then
-    for i in  $(find /data/dalvik-cache -type f); do
-      rm -f $i 2>>$LOG
-    done
+    rm -rf /data/dalvik-cache/* 2>>$LOG
 	echo "Reboot or your apps won't open..."
 	exit
   elif [ "$wipe" == n ]; then
