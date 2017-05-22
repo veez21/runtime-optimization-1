@@ -50,7 +50,7 @@ LATESTARTSERVICE=true
 
 print_modname() {
   ui_print "******************************"
-  ui_print " Android Runtime Optimization    "
+  ui_print " Android Runtime Optimization "
   ui_print "******************************"
 }
 
@@ -122,4 +122,112 @@ ui_print "******************************"
 ui_print "*     FOR BEST RESULTS,      *"  
 ui_print "*     WIPE DALVIK-CACHE      *"
 ui_print "******************************"
+}
+
+install_workaround() {
+    ui_print "- Finding workaround"
+	unzip -o "$ZIP" non-magisk.sh
+	[ -f /data/su.img ] && SUIMG=/data/su.img
+	[ -z "$SUIMG" ] && [ -f /cache/su.img ] && SUIMG=/cache/su.img
+	if [ -n "$SUIMG" ] && [ -f "$SUIMG" ]; then
+	  ui_print "- Systemless SuperSU Detected"
+      mount_image $SUIMG /su
+	  if ! is_mounted /su; then
+        ui_print "! $SUIMG mount failed... abort"
+	    if [ -d /data/data/eu.chainfire.supersu ]; then
+	      ui_print "- Force install to /system/su.d"
+		  mkdir -p /system/su.d
+		  cp -f $INSTALLER/non-magisk.sh /system/su.d/art-opt.sh
+		  chmod 755 /system/su.d/art-opt.sh
+		  chown 0.0 /system/su.d/art-opt.sh
+		  if [ -d /system/etc/init.d ]; then
+   		    ui_print "- Init.d Directory found"
+		    ui_print "- Linking script to /system/etc/init.d"
+		    ln -s /system/su.d/art-opt.sh /system/etc/init.d
+		  fi
+		  ui_print "- Executing script"
+		  /system/su.d/art-opt.sh
+		  ui_print "- Done"
+		  exit
+		fi
+	  else
+	    mkdir -p /su/su.d
+		if [ -f /su/su.d/art-opt.sh ]; then
+		  ui_print "- Detecting previous compiler filter"
+		  prev=$(get_file_prop filter /su/su.d/art-opt.sh)
+		  if [ $? -gt 0 ]; then
+		    ui_print "- --compiler-filter: speed"
+			prev=speed
+		  else
+		    ui_print "- --compiler-filter: $prev"
+			UPDATE=true
+	      fi
+		fi
+		cp -f $INSTALLER/non-magisk.sh /su/su.d/art-opt.sh
+		chmod 755 /su/su.d/art-opt.sh
+		chown 0.0 /su/su.d/art-opt.sh
+		set_prop filter $prev /su/su.d/art-opt.sh
+		ui_print "- Executing script"
+		/su/su.d/art-opt.sh
+		ui_print "- Done"
+		message_wipe
+		exit
+      fi
+	else
+      if [ -d /data/data/eu.chainfire.supersu ] && [ -f /system/xbin/su ]; then
+        ui_print "- System SuperSU Detected"
+        ui_print "- Installing in /system/su.d"
+		if [ -f /system/su.d/art-opt.sh ]; then
+		  ui_print "- Detecting previous compiler filter"
+		  prev=$(get_file_prop filter /su/su.d/art-opt.sh)
+		  if [ $? -gt 0 ]; then
+		    ui_print "- --compiler-filter: speed"
+			prev=speed
+		  else
+		    ui_print "- --compiler-filter: $prev"
+			UPDATE=true
+	      fi
+		fi
+        mkdir -p /system/su.d
+        cp -f $INSTALLER/non-magisk.sh /system/su.d/art-opt.sh
+        chmod 755 /system/su.d/art-opt.sh
+        chown 0.0 /system/su.d/art-opt.sh
+		set_prop filter $prev /system/su.d/art-opt.sh
+        if [ -d /system/etc/init.d ]; then
+          ui_print "- Init.d Directory found"
+          ui_print "- Linking script to /system/etc/init.d"
+          ln -s /system/su.d/art-opt.sh /system/etc/init.d
+        fi
+		ui_print "- Executing script"
+        /system/su.d/art-opt.sh
+		ui_print "- Done"
+		message_wipe
+		exit
+      fi	
+    fi
+	if [ -d /system/etc/init.d ]; then
+	  ui_print "- Init.d Detected"
+	  cp -f $INSTALLER/non-magisk.sh /system/etc/init.d/art-opt.sh 
+	  chmod 755 /system/etc/init.d/art-opt.sh
+	  chown 0.0 /system/etc/init.d/art-opt.sh
+      if [ -f /system/su.d/art-opt.sh ]; then
+		ui_print "- Detecting previous compiler filter"
+		prev=$(get_file_prop filter /su/su.d/art-opt.sh)
+		if [ $? -gt 0 ]; then
+		  ui_print "- --compiler-filter: speed"
+		  prev=speed
+		else
+		  ui_print "- --compiler-filter: $prev"
+		  UPDATE=true
+	    fi
+	  fi
+	  set_prop filter $prev /system/etc/init.d/art-opt.sh
+	  ui_print "- Executing script"
+	  /system/etc/init.d/art-opt.sh
+	  ui_print "- Done"
+	  message_wipe
+	  exit
+	fi
+	ui_print "! Nothing found... abort!"
+    exit 1
 }

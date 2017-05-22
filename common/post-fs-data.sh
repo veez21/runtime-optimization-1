@@ -73,6 +73,7 @@ for i in $(cat $MODDIR/system.prop | grep "[a-zA-Z0-9]=[a-zA-Z0-9]" | sed 's/ /_
   [[ $(echo $i | grep "#_") ]] || log_print "${i%=*} -> ${i#*=}"
 done
 
+set_prop dalvik.vm.dex2oat-filter $filter
 if [ $ram -le 1024 ]; then
   set_prop dalvik.vm.heaptargetutilization 0.9
 else

@@ -171,7 +171,16 @@ if [ $(getprop dalvik.vm.image-dex2oat-filter) != $(get_file_prop dalvik.vm.imag
   runl read wipe
   if [ "$wipe" == y ]; then
     rm -rf /data/dalvik-cache/* 2>>$LOG
-	echo "Reboot or your apps won't open..."
+	echo -n "Reboot now? < y | n > "
+	runl read rbt
+	if [ "$rbt" == "y" ]; then
+	  reboot
+	elif [ "$rbt" == "n" ]; then
+   	  echo "Reboot or your apps won't open... :P"
+	else
+	  echo error
+	  exit 1
+	fi
 	exit
   elif [ "$wipe" == n ]; then
     echo "Before booting back, wipe dalvik-cache for the changes to take effect."
