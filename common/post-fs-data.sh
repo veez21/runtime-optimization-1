@@ -41,6 +41,8 @@ set_prop() {
 to_be_removed="
 pm.dexopt.bg-dexopt
 dalvik.vm.dex2oat-swap
+dalvik.vm.dex2oat-threads
+dalvik.vm.boot-dex2oat-threads
 "
 
 # Get Info
@@ -60,6 +62,7 @@ log_print "* Removing conditional properties from system.prop"
 for i in $to_be_removed; do
   if (grep -q "$i=" $MODDIR/system.prop); then
     sed -i 's/${i}=.*//g' $MODDIR/system.prop
+	resetprop --delete $i
     log_print "${i}: removed"
   fi
 done
@@ -85,6 +88,5 @@ if [ $API -ge 25 ]; then
   fi
 elif [ $API -ge 23 ]; then
   set_prop dalvik.vm.dex2oat-threads 4
-  set_prop dalvik.vm.boot-dex2oat-threads 4
 fi
 log_print "* Done"
