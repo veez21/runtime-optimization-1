@@ -2,5 +2,4 @@ META-INF/** text eol=lf
 common/** text eol=lf
 module.prop text eol=lf
 changelog.txt text eol=lf
-system/bin/** binary
-system/bin/art_magisk text eol=lf
+system/** binary
