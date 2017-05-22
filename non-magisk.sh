@@ -1,5 +1,5 @@
 #!/system/bin/sh
-# Android Runtime Optimization v1.2 by veez21
+# Android Runtime Optimization v1.2.5 by veez21
 # Non-Magisk Module
 set -x 2>/cache/art-opt.log
 # Put this in:
@@ -46,7 +46,7 @@ for i in $to_be_removed; do
 done
 
 set_prop dalvik.vm.image-dex2oat-filter $filter
-set_prop dalvik.vm.dex2oat-filter speed
+set_prop dalvik.vm.dex2oat-filter $filter
 set_prop dalvik.vm.check-dex-sum false
 set_prop dalvik.vm.checkjni false
 set_prop dalvik.vm.execution-mode int:jit
