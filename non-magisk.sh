@@ -56,10 +56,8 @@ if [ $API -ge 25 ]; then
   set_prop pm.dexopt.bg-dexopt $filter
   if [ $ram -le 1024 ]; then
     set_prop dalvik.vm.dex2oat-swap true
-	set_prop dalvik.vm.heaptargetutilization 0.9
   else
     set_prop dalvik.vm.dex2oat-swap false
-	set_prop dalvik.vm.heaptargetutilization 0.75
   fi
 elif [ $API -ge 23 ]; then
   set_prop dalvik.vm.dex2oat-threads 4

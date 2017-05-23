@@ -74,11 +74,6 @@ for i in $(cat $MODDIR/system.prop | grep "[a-zA-Z0-9]=[a-zA-Z0-9]" | sed 's/ /_
 done
 
 set_prop dalvik.vm.dex2oat-filter $filter
-if [ $ram -le 1024 ]; then
-  set_prop dalvik.vm.heaptargetutilization 0.9
-else
-  set_prop dalvik.vm.heaptargetutilization 0.75
-fi
 if [ $API -ge 25 ]; then
   set_prop pm.dexopt.bg-dexopt $filter
   if [ $ram -le 1024 ]; then
