@@ -216,6 +216,13 @@ if [ "$ABILONG" = "x86_64" ]; then ARCH=x64; IS64BIT=true; fi;
 # You can get the Android API version from $API, the CPU architecture from $ARCH
 # Useful if you are creating Android version / platform dependent mods
 
+if (grep -q samsung /system/build.prop); then
+  [ -f /system/xposed.prop ] && {
+    ui_print "! Samsung + Xposed Detected... abort"
+	exit 1
+  }
+fi
+
 if is_mounted /data; then
   IMG=/data/$IMGNAME
   if [ ! -f "/data/magisk.img" ]; then
@@ -255,6 +262,13 @@ mount_image $IMG $MOUNTPATH
 if ! is_mounted $MOUNTPATH; then
   ui_print "! $IMG mount failed... abort"
   exit 1
+fi
+
+if (grep -q samsung /system/build.prop); then
+  [ -d /magisk/xposed ] && {
+    ui_print "! Samsung + Xposed Detected... abort"
+	exit 1
+  }
 fi
 
 if [ -f $MODPATH/system.prop ]; then
