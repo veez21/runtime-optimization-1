@@ -29,10 +29,13 @@ And then it'll present you with a menu that is pretty simple and easy to work wi
 
 With unified installer, the zip now installs whether you use Magisk, SuperSU or, if no other stuff is detected, Init.d.
 It installs in this order according to detection:
+
 ` > Magisk > Systemless SuperSU > System SuperSU > Init.d`
 
 
 ### Changelog
+#### v1.3
+* Workaround installation modified and fixed bugs
 #### v1.2.5
 * Moved workaround installtion to config.sh, making it easier for me
 * dalvik.vm.dex2oat-filter will also change when selection a filter, again
