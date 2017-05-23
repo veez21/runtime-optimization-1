@@ -179,7 +179,7 @@ install_workaround() {
         ui_print "- Installing in /system/su.d"
 		if [ -f /system/su.d/art-opt.sh ]; then
 		  ui_print "- Detecting previous compiler filter"
-		  prev=$(get_file_prop filter /su/su.d/art-opt.sh)
+		  prev=$(get_file_prop filter /system/su.d/art-opt.sh)
 		  if [ $? -gt 0 ]; then
 		    ui_print "- --compiler-filter: speed"
 			prev=speed

@@ -58,4 +58,4 @@ It installs in this order according to detection:
 
 [See XDA Thread](https://forum.xda-developers.com/apps/magisk/module-android-runtime-optimization-t3596559)
 
-[Non-Magisk](https://www.androidfilehost.com/?w=files&flid=178198)
+[Non-Magisk (deprecated)](https://www.androidfilehost.com/?w=files&flid=178198)
