@@ -189,6 +189,7 @@ ui_print "Powered by Magisk (@topjohnwu)"
 ui_print "******************************"
 
 UPDATE=false
+SAM_XPOSED=false
 
 ui_print "- Mounting /system(rw), /vendor(ro), /data, /cache"
 mount /system 2>/dev/null
@@ -218,8 +219,8 @@ if [ "$ABILONG" = "x86_64" ]; then ARCH=x64; IS64BIT=true; fi;
 
 if (grep -q samsung /system/build.prop); then
   [ -f /system/xposed.prop ] && {
-    ui_print "! Samsung + Xposed Detected... abort"
-	exit 1
+    ui_print "! Samsung + Xposed Detected..."
+	SAM_XPOSED=true
   }
 fi
 
@@ -265,9 +266,9 @@ if ! is_mounted $MOUNTPATH; then
 fi
 
 if (grep -q samsung /system/build.prop); then
-  [ -d /magisk/xposed ] && {
-    ui_print "! Samsung + Xposed Detected... abort"
-	exit 1
+  [ -f /system/xposed.prop ] && {
+    ui_print "! Samsung + Xposed Detected..."
+	SAM_XPOSED=true
   }
 fi
 
@@ -347,5 +348,16 @@ if ! $BOOTMODE; then
 fi
 
 ui_print "- Done"
+if $SAM_XPOSED; then
+  ui_print ""
+  ui_print "***********************************"
+  ui_print "*      !! Samsung + Xposed !!     *"
+  ui_print "* This module might break Xposed  *"
+  ui_print "* Framework's functionality and   *"
+  ui_print "* might also cause trouble with a *"
+  ui_print "* few other apps.                 *"
+  ui_print "*     !! YOU'VE BEEN WARNED !!    *"
+  ui_print "***********************************"
+fi
 message_wipe
 exit 0

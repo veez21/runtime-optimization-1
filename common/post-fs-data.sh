@@ -73,15 +73,22 @@ for i in $(cat $MODDIR/system.prop | grep "[a-zA-Z0-9]=[a-zA-Z0-9]" | sed 's/ /_
   [[ $(echo $i | grep "#_") ]] || log_print "${i%=*} -> ${i#*=}"
 done
 
+if [ $ram -le 1024 ]; then
+  set_prop dalvik.vm.heaptargetutilization 0.9
+else
+  set_prop dalvik.vm.heaptargetutilization 0.75
+fi
+
 set_prop dalvik.vm.dex2oat-filter $filter
 if [ $API -ge 25 ]; then
-  set_prop pm.dexopt.bg-dexopt $filter
   if [ $ram -le 1024 ]; then
     set_prop dalvik.vm.dex2oat-swap true
   else
     set_prop dalvik.vm.dex2oat-swap false
   fi
 elif [ $API -ge 23 ]; then
-  set_prop dalvik.vm.dex2oat-threads 4
+  [ ! -d ${MODDIR%/*}/xposed ] && {
+    set_prop dalvik.vm.dex2oat-threads 4
+  }
 fi
 log_print "* Done"

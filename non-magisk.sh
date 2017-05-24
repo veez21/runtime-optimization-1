@@ -45,6 +45,12 @@ for i in $to_be_removed; do
   fi
 done
 
+if [ $ram -le 1024 ]; then
+  set_prop dalvik.vm.heaptargetutilization 0.9
+else
+  set_prop dalvik.vm.heaptargetutilization 0.75
+fi
+
 set_prop dalvik.vm.image-dex2oat-filter $filter
 set_prop dalvik.vm.dex2oat-filter $filter
 set_prop dalvik.vm.check-dex-sum false
@@ -53,12 +59,13 @@ set_prop dalvik.vm.execution-mode int:jit
 set_prop dalvik.vm.dex2oat-thread_count 4
 set_prop dalvik.vm.dexopt-flags v=a,o=v
 if [ $API -ge 25 ]; then
-  set_prop pm.dexopt.bg-dexopt $filter
   if [ $ram -le 1024 ]; then
     set_prop dalvik.vm.dex2oat-swap true
   else
     set_prop dalvik.vm.dex2oat-swap false
   fi
 elif [ $API -ge 23 ]; then
-  set_prop dalvik.vm.dex2oat-threads 4
+  [ ! -f /system/xposed.prop ] && {
+    set_prop dalvik.vm.dex2oat-threads 4
+  }
 fi
