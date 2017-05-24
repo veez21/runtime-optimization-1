@@ -79,7 +79,7 @@ else
   set_prop dalvik.vm.heaptargetutilization 0.75
 fi
 
-set_prop dalvik.vm.dex2oat-filter $filter
+set_prop dalvik.vm.image-dex2oat-filter $filter
 if [ $API -ge 25 ]; then
   if [ $ram -le 1024 ]; then
     set_prop dalvik.vm.dex2oat-swap true

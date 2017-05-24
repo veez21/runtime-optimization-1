@@ -273,7 +273,7 @@ if (grep -q samsung /system/build.prop); then
 fi
 
 if [ -f $MODPATH/system.prop ]; then
-  prev=$(get_file_prop dalvik.vm.image-dex2oat-filter $MODPATH/system.prop)
+  prev=$(get_file_prop dalvik.vm.dex2oat-filter $MODPATH/system.prop)
   if [ $? -eq 0 ]; then
     ui_print "- --compiler-filter: $prev"
   else
@@ -304,7 +304,7 @@ fi
 # prop files
 if $PROPFILE; then
   cp -af $INSTALLER/common/system.prop $MODPATH/system.prop
-  set_prop dalvik.vm.image-dex2oat-filter $prev $MODPATH/system.prop
+  set_prop dalvik.vm.dex2oat-filter $prev $MODPATH/system.prop
 fi
 
 # Module info
