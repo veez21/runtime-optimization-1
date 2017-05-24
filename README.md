@@ -40,6 +40,7 @@ It installs in this order according to detection:
 * Uninstaller Fixed
 * Nexus 6P/other devices on 7.1+ issues fixed (removed pm.dexopt.bg-dexopt)
 * Samsung + Xposed possible fix (needs testing)
+* dalvik.vm.dex2oat-filter as the "Reference" property
 #### v1.2.5
 * Moved workaround installtion to config.sh, making it easier for me
 * dalvik.vm.dex2oat-filter will also change when selection a filter, again
