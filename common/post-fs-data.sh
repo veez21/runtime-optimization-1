@@ -69,7 +69,7 @@ done
 
 # Set properties
 log_print "* Setting properties through resetprop"
-for i in $(cat $MODDIR/system.prop | grep "[a-zA-Z0-9]=[a-zA-Z0-9]" d| sed 's/ /_/g'); do
+for i in $(cat $MODDIR/system.prop | grep "[a-zA-Z0-9]=[a-zA-Z0-9]" | sed 's/ /_/g'); do
   [[ $(echo $i | grep "#_") ]] || log_print "${i%=*} -> ${i#*=}"
 done
 
