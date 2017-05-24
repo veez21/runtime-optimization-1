@@ -36,6 +36,10 @@ It installs in this order according to detection:
 ### Changelog
 #### v1.3
 * Workaround installation modified and fixed bugs
+* Samsung + Xposed Warning in Installer
+* Uninstaller Fixed
+* Nexus 6P issues fixed (removed pm.dexopt.bg-dexopt)
+* Samsung + Xposed possible fix (needs testing)
 #### v1.2.5
 * Moved workaround installtion to config.sh, making it easier for me
 * dalvik.vm.dex2oat-filter will also change when selection a filter, again
