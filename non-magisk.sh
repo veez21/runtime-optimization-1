@@ -52,7 +52,7 @@ if [ $API -ge 25 ]; then
     set_prop dalvik.vm.dex2oat-swap false
   fi
 elif [ $API -ge 23 ]; then
-  [[ ! $(grep -q samsung /system/build.prop) ]] && [ ! -f /system/xposed.prop ] && {
+  [[ ! $(grep -q samsung /system/build.prop) ]] && [ ! -f /system/xposed.prop -o ! -d /magisk/xposed ] && {
     set_prop dalvik.vm.dex2oat-threads 4
   }
 fi
