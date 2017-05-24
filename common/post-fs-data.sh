@@ -48,7 +48,7 @@ dalvik.vm.boot-dex2oat-threads
 # Get Info
 API=$(grep_prop ro.build.version.sdk /system/build.prop) || API="error"
 ram=$(/data/magisk/busybox free -m | grep 'Mem:' | awk '{print $2}')
-filter=$(grep_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop)
+filter=$(grep_prop dalvik.vm.dex2oat-filter $MODDIR/system.prop)
 rom=$(grep_prop ro.build.display.id /system/build.prop) || rom="error"
 
 # Log Info
