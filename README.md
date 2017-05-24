@@ -38,7 +38,7 @@ It installs in this order according to detection:
 * Workaround installation modified and fixed bugs
 * Samsung + Xposed Warning in Installer
 * Uninstaller Fixed
-* Nexus 6P issues fixed (removed pm.dexopt.bg-dexopt)
+* Nexus 6P/other devices on 7.1+ issues fixed (removed pm.dexopt.bg-dexopt)
 * Samsung + Xposed possible fix (needs testing)
 #### v1.2.5
 * Moved workaround installtion to config.sh, making it easier for me
