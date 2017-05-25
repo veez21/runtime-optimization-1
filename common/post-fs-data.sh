@@ -89,6 +89,6 @@ if [ $API -ge 25 ]; then
 elif [ $API -ge 23 ]; then
   [[ ! $(grep -q samsung /system/build.prop) ]] && [ ! -d ${MODDIR%/*}/xposed -o ! -f /system/xposed.prop ] && {
     set_prop dalvik.vm.dex2oat-threads 4
-  }
+  } || log_print "Samsung + Xposed Detected! Skipping dalvik.vm.dex2oat-threads"
 fi
 log_print "* Done"
