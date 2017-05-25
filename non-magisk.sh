@@ -2,14 +2,16 @@
 # Android Runtime Optimization v1.3 by veez21
 # Non-Magisk Module
 set -x 2>/cache/art-opt.log
-# Put this in:
-# - /su/su.d - preferred
-# - /system/su.d - preferred
-# - /system/etc/init.d ???
 
 ## You can edit the 'filter' variable if you like ;)
-## More information in the XDA thread
 filter=speed
+## Avalailabe compiler filters:
+# everything
+# speed
+# balanced
+# space
+# interpret-only
+# verify-none
 ## More information in the XDA thread
 
 ## Don't touch the stuff below :P
