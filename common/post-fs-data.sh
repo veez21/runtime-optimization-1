@@ -85,8 +85,8 @@ if [ $API -ge 25 ]; then
     set_prop dalvik.vm.dex2oat-swap false
   fi
 elif [ $API -ge 23 ]; then
-  [[ ! $(grep -q samsung /system/build.prop) ]] && [ ! -d ${MODDIR%/*}/xposed -o ! -f /system/xposed.prop ] && {
+  [[ ! $(grep -q samsung /system/build.prop) ]] && {
     set_prop dalvik.vm.dex2oat-threads 4
-  } || log_print "Samsung + Xposed Detected! Skipping dalvik.vm.dex2oat-threads"
+  } || log_print "Samsung Detected! Skipping dalvik.vm.dex2oat-threads"
 fi
 log_print "* Done"
