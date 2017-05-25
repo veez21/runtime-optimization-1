@@ -27,13 +27,11 @@ log_print() {
 
 set_prop() {
   [ -n "$3" ] && prop=$3 || prop=$MODDIR/system.prop 
-  if (grep -q "$1=" $prop); then
-    sed -i "s/${1}=.*/${1}=${2}/g" $prop
-  else
+  grep -q "$1=" $prop && sed -i "s/${1}=.*/${1}=${2}/g" $prop || {
     echo "${1}=${2}" >> $prop
     log_print "${1} -> ${2}"
-  fi
-  test -f /system/bin/setprop && setprop $1 $2
+  }
+  [ -f /system/bin/setprop ] && setprop $1 $2
   resetprop $1 $2
 }
 
