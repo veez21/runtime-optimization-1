@@ -108,9 +108,9 @@ echo "by ${W}$AUTHOR${N}"
 echo "$div"
 
 echo ""
-echo "Current: ${W}$(getprop dalvik.vm.image-dex2oat-filter)${N}"
-if [ "$(getprop dalvik.vm.image-dex2oat-filter)" != "$(get_file_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop)" ]; then
-  echo "To be applied: ${Bl}$(get_file_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop)${N}"
+echo "Current: ${W}$(getprop dalvik.vm.dex2oat-filter)${N}"
+if [ "$(getprop dalvik.vm.dex2oat-filter)" != "$(get_file_prop dalvik.vm.dex2oat-filter $MODDIR/system.prop)" ]; then
+  echo "To be applied: ${Bl}$(get_file_prop dalvik.vm.dex2oat-filter $MODDIR/system.prop)${N}"
 fi
 echo ""
 echo "Compiler Filters:"
@@ -129,32 +129,32 @@ runl read filter
 case $filter in
   1) runl echo "Changing to ${W}everything${N}"
      sleep 0.3
-	 runl set_file_prop dalvik.vm.image-dex2oat-filter everything $MODDIR/system.prop
+	 runl set_file_prop dalvik.vm.dex2oat-filter everything $MODDIR/system.prop
 	 echo "Reboot to apply changes"
     ;;
   2) runl echo "Changing to ${W}speed${N}"
      sleep 0.3
-	 runl set_file_prop dalvik.vm.image-dex2oat-filter speed $MODDIR/system.prop
+	 runl set_file_prop dalvik.vm.dex2oat-filter speed $MODDIR/system.prop
 	 echo "Reboot to apply changes"
     ;;
   3) runl echo "Changing to ${W}balanced${N}"
      sleep 0.3
-	 runl set_file_prop dalvik.vm.image-dex2oat-filter balanced $MODDIR/system.prop
+	 runl set_file_prop dalvik.vm.dex2oat-filter balanced $MODDIR/system.prop
 	 echo "Reboot to apply changes"
     ;;
   4) runl echo "Changing to ${W}space${N}"
      sleep 0.3
-	 runl set_file_prop dalvik.vm.image-dex2oat-filter space $MODDIR/system.prop
+	 runl set_file_prop dalvik.vm.dex2oat-filter space $MODDIR/system.prop
 	 echo "Reboot to apply changes"
     ;;
   5) runl echo "Changing to ${W}interpret-only${N}"
      sleep 0.3
-	 runl set_file_prop dalvik.vm.image-dex2oat-filter interpret-only $MODDIR/system.prop
+	 runl set_file_prop dalvik.vm.dex2oat-filter interpret-only $MODDIR/system.prop
 	 echo "Reboot to apply changes"
     ;;
   6) runl echo "Changing to ${W}verify-none${N}"
      sleep 0.3
-	 runl set_file_prop dalvik.vm.image-dex2oat-filter verify-none $MODDIR/system.prop
+	 runl set_file_prop dalvik.vm.dex2oat-filter verify-none $MODDIR/system.prop
 	 echo "Reboot to apply changes"
     ;;
   xda) am start https://forum.xda-developers.com/apps/magisk/module-android-runtime-optimization-t3596559 >> $LOG
@@ -165,7 +165,7 @@ case $filter in
      runl exit 1 ;;
 esac
 
-if [ $(getprop dalvik.vm.image-dex2oat-filter) != $(get_file_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop) ]; then
+if [ $(getprop dalvik.vm.dex2oat-filter) != $(get_file_prop dalvik.vm.dex2oat-filter $MODDIR/system.prop) ]; then
   runl echo "Wiping dalvik-cache and rebooting emediately is necessary for it to take effect."
   runl echo -n "Wipe? < y | n> "
   runl read wipe

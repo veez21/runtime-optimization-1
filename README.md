@@ -29,10 +29,18 @@ And then it'll present you with a menu that is pretty simple and easy to work wi
 
 With unified installer, the zip now installs whether you use Magisk, SuperSU or, if no other stuff is detected, Init.d.
 It installs in this order according to detection:
+
 ` > Magisk > Systemless SuperSU > System SuperSU > Init.d`
 
 
 ### Changelog
+#### v1.3
+* Workaround installation modified and fixed bugs
+* Samsung + Xposed Warning in Installer
+* Uninstaller Fixed
+* Nexus 6P/other devices on 7.1+ issues fixed (removed pm.dexopt.bg-dexopt)
+* Samsung + Xposed possible fix (needs testing)
+* dalvik.vm.dex2oat-filter as the "Reference" property
 #### v1.2.5
 * Moved workaround installtion to config.sh, making it easier for me
 * dalvik.vm.dex2oat-filter will also change when selection a filter, again
@@ -58,4 +66,4 @@ It installs in this order according to detection:
 
 [See XDA Thread](https://forum.xda-developers.com/apps/magisk/module-android-runtime-optimization-t3596559)
 
-[Non-Magisk](https://www.androidfilehost.com/?w=files&flid=178198)
+[Non-Magisk (deprecated)](https://www.androidfilehost.com/?w=files&flid=178198)
