@@ -17,11 +17,7 @@ filter=speed
 ## Don't touch the stuff below :P
 set_prop() {
   [ -n "$3" ] && prop=$3 || prop=/system/build.prop 
-  if (grep -q "$1=" $prop); then
-    sed -i "s/${1}=.*/${1}=${2}/g" $prop
-  else
-    echo "${1}=${2}" >> $prop
-  fi
+  grep -q "$1=" $prop && sed -i "s/${1}=.*/${1}=${2}/g" $prop || echo "${1}=${2}" >> $prop
   test -f /system/bin/setprop && setprop $1 $2
 }
 
@@ -54,7 +50,7 @@ if [ $API -ge 25 ]; then
     set_prop dalvik.vm.dex2oat-swap false
   fi
 elif [ $API -ge 23 ]; then
-  [[ ! $(grep -q samsung /system/build.prop) ]] && [ ! -f /system/xposed.prop -o ! -d /magisk/xposed ] && {
+  [[ ! $(grep -q samsung /system/build.prop) ]] && {
     set_prop dalvik.vm.dex2oat-threads 4
   }
 fi

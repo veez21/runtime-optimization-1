@@ -37,10 +37,8 @@ set_prop() {
 
 # List props to be removed
 to_be_removed="
-pm.dexopt.bg-dexopt
 dalvik.vm.dex2oat-swap
 dalvik.vm.dex2oat-threads
-dalvik.vm.boot-dex2oat-threads
 "
 
 # Get Info
