@@ -13,7 +13,7 @@ help_message() {
 cat <<EOF
 ART Optimization by veez21
 
-setfilter [--compiler-filter]
+setfilter [--compiler-filter] [file]
     compiler filters:
 	  everything
 	  speed
