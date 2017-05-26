@@ -16,7 +16,9 @@ In L, dex2oat takes a variety of --compiler-filter options to control how it com
 
 ### Preference
 
-You can change the default compiler filter with the one you prefer (or want to experiment with).
+#### Magisk
+
+You can change the default compiler-filter with the one you prefer (or want to experiment with).
 Just go to [Terminal Emulator](https://play.google.com/store/apps/details?id=jackpal.androidterm) and then type:
 
 	art_magisk
@@ -24,6 +26,17 @@ Just go to [Terminal Emulator](https://play.google.com/store/apps/details?id=jac
 
 And then it'll present you with a menu that is pretty simple and easy to work with.
 ![art_magisk menu](http://i.imgur.com/OCME41l.png)
+
+#### Non-Magisk
+
+You can change the default compiler-filter with the one you prefer (or want to experiment with).
+Just go to [Terminal Emulator](https://play.google.com/store/apps/details?id=jackpal.androidterm) and then type:
+
+	setfilter <--compiler-filter>
+![setfilter]()
+
+If you haven't entered your filter, it'll present you on how to use it.
+![setfilter help]()
 
 ### UNIFIED Installer
 
@@ -63,10 +76,11 @@ It installs in this order according to detection:
 #### v1
 * Unified Installer
 * dalvik.vm.dex2oat-thread_count is now only applied Android 6+
+`previous change logs deleted`
 
 
 [More info about this topic here](https://source.android.com/devices/tech/dalvik/configure)
 
 [See XDA Thread](https://forum.xda-developers.com/apps/magisk/module-android-runtime-optimization-t3596559)
 
-[Non-Magisk (deprecated)](https://www.androidfilehost.com/?w=files&flid=178198)
+[Non-Magisk (deprecated use UNIFIED instead)](https://www.androidfilehost.com/?w=files&flid=178198)

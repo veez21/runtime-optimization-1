@@ -1,0 +1,71 @@
+#!/system/bin/sh
+# Set Compiler Filter for ART Optimization Non-Magisk
+# by veez21
+
+mount -o remount,rw / 2>/dev/null
+mount -o remount,rw rootfs 2>/dev/null
+mount -o remount,rw /system 2>/dev/null
+mount -o rw,remount / 2>/dev/null
+mount -o rw,remount rootfs 2>/dev/null
+mount -o rw,remount /system 2>/dev/null
+
+help_message() {
+cat <<EOF
+ART Optimization by veez21
+
+setfilter [--compiler-filter]
+    compiler filters:
+	  everything
+	  speed
+	  balanced
+	  space
+	  interpret-only
+	  verify-none
+EOF
+exit 1
+}
+
+filters="everything speed balanced space interpret-only verify-none"
+
+if [ -z $1 ]; then help_message; fi
+if [ -n $2 ]; then 
+  file=$2
+  echo " - checking $file"
+  [ -f $file ] && {
+    echo "$file exists"
+	echo " -- checking compatibility"
+	[ -x $ file ] && {
+	  echo " --- $file can be executed"
+	  grep -q "filter=" $file && echo " ---- $file is compatible" || { echo " ---- $file is not compatible"; exit 3 }
+	} || { echo " -- $file is not executable"; exit 4 }
+  }
+else
+  echo " - no file supplied, checking default directories"
+  for i in /su/su.d/art-opt.sh /system/su.d/art-opt.sh /system/etc/init.d/art-opt.sh; do
+    [ -x $i ] && file=$i || { echo " -- file not found"; exit 5 }
+  done
+  echo " -- $file exists and can be executed"
+fi
+
+echo " - checking supplied filter"
+for i in $filters; do
+  if [ $i == $1 ]; then
+    filter=$1
+    break
+  fi
+done
+
+[ -z $filter ] && echo " -- $1 is not a valid --compiler-filter" && exit 2
+
+echo " -- $filter is a valid --compiler-filter"
+
+echo " --- setting $filter for $file"
+sed -i "s/filter=.*/filter=${filter}/g" $file
+grep -q "filter=${filter}" $file && { 
+  echo " - successfully changed to $filter"
+  echo " - reboot and wipe dalvik-cache for changes to apply"
+  exit
+  } || {
+  echo " - failed"
+  exit 6
+}

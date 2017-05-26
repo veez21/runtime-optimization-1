@@ -6,12 +6,12 @@ set -x 2>/cache/art-opt.log
 ## You can edit the 'filter' variable if you like ;)
 filter=speed
 ## Avalailabe compiler filters:
-# everything
-# speed
-# balanced
-# space
-# interpret-only
-# verify-none
+# - everything
+# - speed
+# - balanced
+# - space
+# - interpret-only
+# - verify-none
 ## More information in the XDA thread
 
 ## Don't touch the stuff below :P
@@ -52,5 +52,5 @@ elif [ $API -ge 23 ]; then
   [[ ! $(grep -q samsung /system/build.prop) ]] && {
     set_prop dalvik.vm.dex2oat-threads 4
     set_prop dalvik.vm.dex2oat-thread_count 4
- }
+  }
 fi
