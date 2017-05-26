@@ -32,7 +32,7 @@ And then it'll present you with a menu that is pretty simple and easy to work wi
 You can change the default compiler-filter with the one you prefer (or want to experiment with).
 Just go to [Terminal Emulator](https://play.google.com/store/apps/details?id=jackpal.androidterm) and then type:
 
-	setfilter <--compiler-filter>
+	setfilter [--compiler-filter] [file]
 ![setfilter]()
 
 If you haven't entered your filter, it'll present you on how to use it.
