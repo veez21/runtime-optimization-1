@@ -34,6 +34,9 @@ It installs in this order according to detection:
 
 
 ### Changelog
+#### v1.4
+* Code Optimization
+* Another attempt for Samsung
 #### v1.3
 * Workaround installation modified and fixed bugs
 * Samsung + Xposed Warning in Installer
