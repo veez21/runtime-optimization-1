@@ -13,6 +13,7 @@ filter=speed
 # - interpret-only
 # - verify-none
 ## More information in the XDA thread
+# c471c1f312a2c335d8405643848721a9
 
 ## Don't touch the stuff below :P
 set_prop() {

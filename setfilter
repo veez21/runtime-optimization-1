@@ -40,7 +40,7 @@ if [ $2 ]; then
 	secho " -- checking compatibility"
 	[ -x $file ] && {
 	  secho " --- $file can be executed"
-	  grep -q "filter=" $file && secho " ---- $file is compatible" || {
+	  grep -q "c471c1f312a2c335d8405643848721a9" $file && secho " ---- $file is compatible" || {
 	    secho " ---- $file is not compatible"
 		exit 3
 	  }
@@ -60,6 +60,11 @@ else
   done
   [ -z $file ] && secho " -- no file found" && exit 5
   secho " -- $file exists and can be executed"
+  secho " -- checking compatibility"
+  grep -q "c471c1f312a2c335d8405643848721a9" $file && secho " --- $file is compatible" || {
+    secho " --- $file is not compatible"
+	exit 3
+  }
 fi
 secho " - checking supplied filter"
 for i in everything speed balanced space interpret-only verify-none; do
