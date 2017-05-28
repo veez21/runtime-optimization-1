@@ -2,6 +2,13 @@
 # Set Compiler Filter for ART Optimization Non-Magisk
 # by veez21
 
+# Exit Codes: 
+# 1 - nothing supplied/help invoked
+# 2 - applying filter failed
+# 3 - file is not compatible
+# 4 - file is not executable
+# 5 - file doesn't exist
+
 mount -o remount,rw / 2>/dev/null
 mount -o remount,rw rootfs 2>/dev/null
 mount -o remount,rw /system 2>/dev/null
@@ -22,7 +29,7 @@ setfilter [--compiler-filter] [file]
 	  interpret-only
 	  verify-none
 EOF
-exit 1
+exit $1
 }
 
 secho() { 
@@ -31,8 +38,8 @@ secho() {
 }
 
 [ -z $1 ] && help_message
-[ "$1" == "--help" ] && help_message  || [ "$1" == "-h" ] && help_message
-if [ $2 ]; then 
+[ "$1" == "--help" ] && help_message 1 || [ "$1" == "-h" ] && help_message 1
+if [ $2 ]; then
   file=$2
   secho " - checking $file"
   [ -f $file ] && {
@@ -85,5 +92,5 @@ grep -q "filter=${filter}" $file && {
   exit
   } || {
   secho " - failed"
-  exit 6
+  exit 2
 }
