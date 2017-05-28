@@ -50,6 +50,8 @@ It installs in this order according to detection:
 #### v1.4
 * Code Optimization
 * Another attempt for Samsung
+* Added `setfilter` pseudo-binary for Non-Magisk
+* Minor debloat
 #### v1.3
 * Workaround installation modified and fixed bugs
 * Samsung + Xposed Warning in Installer
