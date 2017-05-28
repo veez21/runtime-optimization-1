@@ -26,7 +26,7 @@ exit 1
 }
 
 [ -z $1 ] && help_message
-[ "$1" -eq "--help" -o "$1" -eq "-h" ] && help_message 
+[ "$1" == "--help" ] && help_message  || [ "$1" == "-h" ] && help_message
 if [ $2 ]; then 
   file=$2
   echo " - checking $file"
