@@ -52,25 +52,28 @@ if [ $2 ]; then
 		exit 3
 	  }
 	} || { 
-	  secho " -- $file is not executable"
+	  secho " --- $file is not executable"
 	  exit 4 
 	}
   } || {
-    secho " - $file doesn't exist"
+    secho " -- $file doesn't exist"
 	exit 5
   }
 else
   secho " - no file supplied, checking default directories"
   for i in /magisk/.core/post-fs-data/art-opt.sh /su/su.d/art-opt.sh /system/su.d/art-opt.sh /system/etc/init.d/art-opt.sh /magisk/.core/post-fs-data/non-magisk.sh /su/su.d/non-magisk.sh /system/su.d/non-magisk.sh /system/etc/init.d/non-magisk.sh; do
     sleep 0.2
-    [ -x $i ] && file=$i && break
+    [ -f $i ] && file=$i && break
   done
   [ -z $file ] && secho " -- no file found" && exit 5
-  secho " -- $file exists and can be executed"
+  secho " -- $file exists"
   secho " -- checking compatibility"
-  grep -q "c471c1f312a2c335d8405643848721a9" $file && secho " --- $file is compatible" || {
-    secho " --- $file is not compatible"
+  grep -q "c471c1f312a2c335d8405643848721a9" $file && secho " ---- $file is compatible" || {
+    secho " ---- $file is not compatible"
 	exit 3
+  }
+  [ -x $file ] && secho " --- $file can be executed" || {
+    secho " --- $file is not executable"
   }
 fi
 secho " - checking supplied filter"
