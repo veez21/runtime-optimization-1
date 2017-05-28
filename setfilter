@@ -27,7 +27,7 @@ exit 1
 
 secho() { 
   echo "$@" 
-  sleep 0.02
+  sleep 0.2
 }
 
 [ -z $1 ] && help_message
