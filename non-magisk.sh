@@ -2,24 +2,23 @@
 # Android Runtime Optimization v1.3 by veez21
 # Non-Magisk Module
 set -x 2>/cache/art-opt.log
-# Put this in:
-# - /su/su.d - preferred
-# - /system/su.d - preferred
-# - /system/etc/init.d ???
 
 ## You can edit the 'filter' variable if you like ;)
-## More information in the XDA thread
 filter=speed
+## Avalailabe compiler filters:
+# - everything
+# - speed
+# - balanced
+# - space
+# - interpret-only
+# - verify-none
 ## More information in the XDA thread
+# c471c1f312a2c335d8405643848721a9
 
 ## Don't touch the stuff below :P
 set_prop() {
   [ -n "$3" ] && prop=$3 || prop=/system/build.prop 
-  if (grep -q "$1=" $prop); then
-    sed -i "s/${1}=.*/${1}=${2}/g" $prop
-  else
-    echo "${1}=${2}" >> $prop
-  fi
+  grep -q "$1=" $prop && sed -i "s/${1}=.*/${1}=${2}/g" $prop || echo "${1}=${2}" >> $prop
   test -f /system/bin/setprop && setprop $1 $2
 }
 
@@ -42,8 +41,7 @@ set_prop dalvik.vm.image-dex2oat-filter $filter
 set_prop dalvik.vm.dex2oat-filter $filter
 set_prop dalvik.vm.check-dex-sum false
 set_prop dalvik.vm.checkjni false
-set_prop dalvik.vm.execution-mode int:jit
-set_prop dalvik.vm.dex2oat-thread_count 4
+set_prop dalvik.vm.usejit true
 set_prop dalvik.vm.dexopt-flags v=a,o=v
 if [ $API -ge 25 ]; then
   if [ $ram -le 1024 ]; then
@@ -52,7 +50,7 @@ if [ $API -ge 25 ]; then
     set_prop dalvik.vm.dex2oat-swap false
   fi
 elif [ $API -ge 23 ]; then
-  [[ ! $(grep -q samsung /system/build.prop) ]] && [ ! -f /system/xposed.prop -o ! -d /magisk/xposed ] && {
+  ! grep -q -i samsung /system/build.prop && {
     set_prop dalvik.vm.dex2oat-threads 4
   }
 fi

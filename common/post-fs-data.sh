@@ -27,22 +27,18 @@ log_print() {
 
 set_prop() {
   [ -n "$3" ] && prop=$3 || prop=$MODDIR/system.prop 
-  if (grep -q "$1=" $prop); then
-    sed -i "s/${1}=.*/${1}=${2}/g" $prop
-  else
+  grep -q "$1=" $prop && sed -i "s/${1}=.*/${1}=${2}/g" $prop || {
     echo "${1}=${2}" >> $prop
     log_print "${1} -> ${2}"
-  fi
-  test -f /system/bin/setprop && setprop $1 $2
+  }
+  [ -f /system/bin/setprop ] && setprop $1 $2
   resetprop $1 $2
 }
 
 # List props to be removed
 to_be_removed="
-pm.dexopt.bg-dexopt
 dalvik.vm.dex2oat-swap
 dalvik.vm.dex2oat-threads
-dalvik.vm.boot-dex2oat-threads
 "
 
 # Get Info
@@ -87,8 +83,8 @@ if [ $API -ge 25 ]; then
     set_prop dalvik.vm.dex2oat-swap false
   fi
 elif [ $API -ge 23 ]; then
-  [[ ! $(grep -q samsung /system/build.prop) ]] && [ ! -d ${MODDIR%/*}/xposed -o ! -f /system/xposed.prop ] && {
+  ! grep -q -i samsung /system/build.prop && {
     set_prop dalvik.vm.dex2oat-threads 4
-  } || log_print "Samsung + Xposed Detected! Skipping dalvik.vm.dex2oat-threads"
+  } || log_print "Samsung Detected! Skipping dalvik.vm.dex2oat-threads"
 fi
 log_print "* Done"

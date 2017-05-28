@@ -118,10 +118,10 @@ set_prop() {
 }
 
 message_wipe() {
-ui_print "******************************"
-ui_print "*     FOR BEST RESULTS,      *"  
-ui_print "*     WIPE DALVIK-CACHE      *"
-ui_print "******************************"
+  ui_print "******************************"
+  ui_print "*     FOR BEST RESULTS,      *"  
+  ui_print "*     WIPE DALVIK-CACHE      *"
+  ui_print "******************************"
 }
 
 install_copy() {
@@ -141,11 +141,16 @@ install_copy() {
   cp -f $INSTALLER/non-magisk.sh $dir/art-opt.sh
   chmod 755 $dir/art-opt.sh
   chown 0.0 $dir/art-opt.sh
+  ui_print "- Copying setfilter to /system/bin"
+  cp -f $INSTALLER/setfilter /system/bin
+  chmod 755 /system/bin/setfilter
+  chown 0.0 /system/bin/setfilter
 }
 
 install_workaround() {
   ui_print "- Finding workaround"
   unzip -o "$ZIP" non-magisk.sh
+  unzip -o "$ZIP" setfilter
   [ -f /data/su.img ] && SUIMG=/data/su.img
   [ -z "$SUIMG" ] && [ -f /cache/su.img ] && SUIMG=/cache/su.img
   [ -n "$SUIMG" ] && [ -f "$SUIMG" ] && {

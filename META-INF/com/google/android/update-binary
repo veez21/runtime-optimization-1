@@ -359,5 +359,7 @@ if $SAM_XPOSED; then
   ui_print "*     !! YOU'VE BEEN WARNED !!    *"
   ui_print "***********************************"
 fi
-message_wipe
+if ! $UPDATE; then
+  message_wipe
+fi
 exit 0
