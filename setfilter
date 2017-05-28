@@ -9,6 +9,8 @@
 # 4 - file is not executable
 # 5 - file doesn't exist
 
+# c471c1f312a2c335d8405643848721a9 is used to detect compatibility
+
 mount -o remount,rw / 2>/dev/null
 mount -o remount,rw rootfs 2>/dev/null
 mount -o remount,rw /system 2>/dev/null
