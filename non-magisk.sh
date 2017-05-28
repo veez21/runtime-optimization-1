@@ -49,7 +49,7 @@ if [ $API -ge 25 ]; then
     set_prop dalvik.vm.dex2oat-swap false
   fi
 elif [ $API -ge 23 ]; then
-  ! grep -q samsung /system/build.prop && {
+  ! grep -q -i samsung /system/build.prop && {
     set_prop dalvik.vm.dex2oat-threads 4
   }
 fi
