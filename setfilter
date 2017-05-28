@@ -25,7 +25,10 @@ EOF
 exit 1
 }
 
-secho() { echo "$@" ; sleep 0.02 }
+secho() { 
+  echo "$@" 
+  sleep 0.02
+}
 
 [ -z $1 ] && help_message
 [ "$1" == "--help" ] && help_message  || [ "$1" == "-h" ] && help_message
