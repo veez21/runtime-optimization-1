@@ -25,52 +25,54 @@ EOF
 exit 1
 }
 
+secho() { echo "$@" ; sleep 0.02 }
+
 [ -z $1 ] && help_message
 [ "$1" == "--help" ] && help_message  || [ "$1" == "-h" ] && help_message
 if [ $2 ]; then 
   file=$2
-  echo " - checking $file"
+  secho " - checking $file"
   [ -f $file ] && {
-    echo " -- $file exists"
-	echo " -- checking compatibility"
+    secho " -- $file exists"
+	secho " -- checking compatibility"
 	[ -x $file ] && {
-	  echo " --- $file can be executed"
-	  grep -q "filter=" $file && echo " ---- $file is compatible" || {
-	    echo " ---- $file is not compatible"
+	  secho " --- $file can be executed"
+	  grep -q "filter=" $file && secho " ---- $file is compatible" || {
+	    secho " ---- $file is not compatible"
 		exit 3
 	  }
 	} || { 
-	  echo " -- $file is not executable"
+	  secho " -- $file is not executable"
 	  exit 4 
 	}
   }
 else
-  echo " - no file supplied, checking default directories"
+  secho " - no file supplied, checking default directories"
   for i in /su/su.d/art-opt.sh /system/su.d/art-opt.sh /system/etc/init.d/art-opt.sh; do
-    [ -x $i ] && file=$i || {
-	  echo " -- no file found"
-	  exit 5
-	}
+    sleep 0.2
+    [ -x $i ] && file=$i && break
   done
-  echo " -- $file exists and can be executed"
+  [ -z $file ] && secho " -- no file found" && exit 5
+  secho " -- $file exists and can be executed"
 fi
-echo " - checking supplied filter"
+secho " - checking supplied filter"
 for i in everything speed balanced space interpret-only verify-none; do
+  sleep 0.2
   if [ $i == $1 ]; then
     filter=$1
     break
   fi
 done
-[ -z $filter ] && echo " -- $1 is not a valid --compiler-filter" && exit 2
-echo " -- $filter is a valid --compiler-filter"
-echo " --- setting $filter for $file"
+[ -z $filter ] && secho " -- $1 is not a valid --compiler-filter" && exit 2
+secho " -- $filter is a valid --compiler-filter"
+secho " --- setting $filter for $file"
 sed -i "s/filter=.*/filter=${filter}/g" $file 2>/dev/null
-[ $? -ne 0 ] && echo " - failed" && exit 6
+[ $? -ne 0 ] && secho " - failed" && exit 6
 grep -q "filter=${filter}" $file && { 
-  echo " - successfully changed to $filter"
-  echo " - reboot and wipe dalvik-cache for changes to apply"
+  secho " - successfully changed to $filter"
+  secho " - reboot and wipe dalvik-cache for changes to apply"
   exit
   } || {
-  echo " - failed"
+  secho " - failed"
   exit 6
 }
