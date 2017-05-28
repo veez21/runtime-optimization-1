@@ -27,22 +27,31 @@ exit 1
 
 filters="everything speed balanced space interpret-only verify-none"
 
-if [ -z $1 ]; then help_message; fi
-if [ -n $2 ]; then 
+[ -z $1 ] && help_message
+if [ $2 ]; then 
   file=$2
   echo " - checking $file"
   [ -f $file ] && {
-    echo "$file exists"
+    echo " -- $file exists"
 	echo " -- checking compatibility"
-	[ -x $ file ] && {
+	[ -x $file ] && {
 	  echo " --- $file can be executed"
-	  grep -q "filter=" $file && echo " ---- $file is compatible" || { echo " ---- $file is not compatible"; exit 3 }
-	} || { echo " -- $file is not executable"; exit 4 }
+	  grep -q "filter=" $file && echo " ---- $file is compatible" || {
+	    echo " ---- $file is not compatible"
+		exit 3
+	  }
+	} || { 
+	  echo " -- $file is not executable"
+	  exit 4 
+	}
   }
 else
   echo " - no file supplied, checking default directories"
   for i in /su/su.d/art-opt.sh /system/su.d/art-opt.sh /system/etc/init.d/art-opt.sh; do
-    [ -x $i ] && file=$i || { echo " -- file not found"; exit 5 }
+    [ -x $i ] && file=$i || {
+	  echo " -- file not found"
+	  exit 5
+	}
   done
   echo " -- $file exists and can be executed"
 fi
