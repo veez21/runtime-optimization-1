@@ -48,6 +48,9 @@ if [ $2 ]; then
 	  secho " -- $file is not executable"
 	  exit 4 
 	}
+  } || {
+    secho " - $file doesn't exist"
+	exit 5
   }
 else
   secho " - no file supplied, checking default directories"
