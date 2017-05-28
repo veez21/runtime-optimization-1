@@ -40,7 +40,7 @@ set_prop dalvik.vm.image-dex2oat-filter $filter
 set_prop dalvik.vm.dex2oat-filter $filter
 set_prop dalvik.vm.check-dex-sum false
 set_prop dalvik.vm.checkjni false
-set_prop dalvik.vm.execution-mode int:jit
+set_prop dalvik.vm.usejit true
 set_prop dalvik.vm.dexopt-flags v=a,o=v
 if [ $API -ge 25 ]; then
   if [ $ram -le 1024 ]; then
@@ -51,6 +51,5 @@ if [ $API -ge 25 ]; then
 elif [ $API -ge 23 ]; then
   [[ ! $(grep -q samsung /system/build.prop) ]] && {
     set_prop dalvik.vm.dex2oat-threads 4
-    set_prop dalvik.vm.dex2oat-thread_count 4
   }
 fi

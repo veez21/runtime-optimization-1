@@ -85,7 +85,6 @@ if [ $API -ge 25 ]; then
 elif [ $API -ge 23 ]; then
   [[ ! $(grep -q samsung /system/build.prop) ]] && {
     set_prop dalvik.vm.dex2oat-threads 4
-	set_prop dalvik.vm.dex2oat-thread_count 4
   } || log_print "Samsung Detected! Skipping dalvik.vm.dex2oat-threads"
 fi
 log_print "* Done"
