@@ -49,7 +49,7 @@ else
   echo " - no file supplied, checking default directories"
   for i in /su/su.d/art-opt.sh /system/su.d/art-opt.sh /system/etc/init.d/art-opt.sh; do
     [ -x $i ] && file=$i || {
-	  echo " -- file not found"
+	  echo " -- no file found"
 	  exit 5
 	}
   done
