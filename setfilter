@@ -54,7 +54,7 @@ if [ $2 ]; then
   }
 else
   secho " - no file supplied, checking default directories"
-  for i in /su/su.d/art-opt.sh /system/su.d/art-opt.sh /system/etc/init.d/art-opt.sh; do
+  for i in /magisk/.core/post-fs-data/art-opt.sh /su/su.d/art-opt.sh /system/su.d/art-opt.sh /system/etc/init.d/art-opt.sh /magisk/.core/post-fs-data/non-magisk.sh /su/su.d/non-magisk.sh /system/su.d/non-magisk.sh /system/etc/init.d/non-magisk.sh; do
     sleep 0.2
     [ -x $i ] && file=$i && break
   done
