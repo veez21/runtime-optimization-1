@@ -1,6 +1,6 @@
 #!/system/bin/sh
-# Android Runtime Optimization v1.3 by veez21
-# Non-Magisk Module
+# Android Runtime Optimization by veez21
+
 set -x 2>/cache/art-opt.log
 
 ## You can edit the 'filter' variable if you like ;)
