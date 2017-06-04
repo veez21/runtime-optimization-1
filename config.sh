@@ -147,7 +147,7 @@ install_copy() {
   set_perm /system/bin/setfilter 0 0 0755
   modver=$(get_file_prop version $INSTALLER/module.prop)
   modrel=$(get_file_prop versionCode $INSTALLER/module.prop)
-  sed -i 3"s/^/Non-Magisk v${modver}(${modrel})/" $dir/art-opt.sh
+  sed -i 3"s/^/# Non-Magisk v${modver}(${modrel})/" $dir/art-opt.sh
 }
 
 install_workaround() {
