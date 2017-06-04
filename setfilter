@@ -12,8 +12,8 @@
 # 127 - no root access/no write permission 
 # c471c1f312a2c335d8405643848721a9 is used to detect compatibility
 
-user=$(id); user=${user##*(}; user=${user%%*=}
-[ $user == 0 ] && echo " - root permission needed!" && exit 127
+user=$(id); user=${user%%'('*}; user=${user##*=}
+[ $user -ne 0 ] && echo " - root permission needed!" && exit 127
 
 mount -o remount,rw / 2>/dev/null
 mount -o remount,rw rootfs 2>/dev/null
