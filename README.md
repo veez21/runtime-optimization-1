@@ -47,6 +47,10 @@ It installs in this order according to detection:
 
 
 ### Changelog
+#### v1.4.1
+* setfilter needs root access!
+* art_magisk needs root access!
+* Dynamic version comment for Non-Magisk!
 #### v1.4
 * Code Optimization
 * Another attempt for Samsung
