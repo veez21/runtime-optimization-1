@@ -2,6 +2,8 @@
 # Terminal Magisk Mod Template
 # by veez21 @ xda-developers
 
+user=$(id); user=${user%%'('*}; user=${user##*=}
+[ $user -ne 0 ] && echo " - root permission needed!" && exit 127
 
 # Magisk Module ID **
 # > ENTER MAGISK MODULE ID HERE
