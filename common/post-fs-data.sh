@@ -8,55 +8,83 @@ MODDIR=${0%/*}
 
 grep_prop() {
   _prop=$(grep "$1=" $2)
+  [ $? -gt 0 ] && return 1
   echo ${_prop#*=}
   unset _prop
 }
 
+# Get version
 ver=$(grep_prop version $MODDIR/module.prop)
+# Determine if logging is on
+[ -n $1 ] && [ $1 == "false" ] && LOG=$1 || LOG=true
 
 log_print() {
-  LOGFILE=/cache/magisk.log
-  echo "ART Optimization ${ver}: $@"
-  echo "ART Optimization ${ver}: $@" >> $LOGFILE
-  log -p i -t "ART Optimizer ${ver}" "$@"
+  if ($LOG); then
+    echo "ART Optimization ${ver}: $@" >> /cache/magisk.log
+    log -p i -t "ART Optimizer ${ver}" "$@"
+  fi
 }
 
 set_prop() {
   [ -n "$3" ] && prop=$3 || prop=$MODDIR/system.prop 
-  if (grep -q "$1=" $prop); then
-    sed -i "s/${1}=.*/${1}=${2}/g" $prop
-  else
+  grep -q "$1=" $prop && sed -i "s/${1}=.*/${1}=${2}/g" $prop || {
     echo "${1}=${2}" >> $prop
-  fi
-  test -f /system/bin/setprop && setprop $1 $2
+    log_print "${1} -> ${2}"
+  }
+  [ -f /system/bin/setprop ] && setprop $1 $2
   resetprop $1 $2
 }
 
-API=$(grep_prop ro.build.version.sdk /system/build.prop)
+# List props to be removed
+to_be_removed="
+dalvik.vm.dex2oat-swap
+dalvik.vm.dex2oat-threads
+"
+
+# Get Info
+API=$(grep_prop ro.build.version.sdk /system/build.prop) || API="error"
 ram=$(/data/magisk/busybox free -m | grep 'Mem:' | awk '{print $2}')
-filter=$(grep_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop)
+filter=$(grep_prop dalvik.vm.dex2oat-filter $MODDIR/system.prop)
+rom=$(grep_prop ro.build.display.id /system/build.prop) || rom="error"
 
-log_print "Compiler Filter set to: $filter"
-log_print "ROM: $(grep_prop ro.build.display.id /system/build.prop)"
-log_print "API: $API"
-log_print "RAM: $ram"
+# Log Info
+log_print "** Compiler Filter: $filter"
+log_print "** ROM: $rom"
+log_print "** API: $API"
+log_print "** RAM: $ram"
 
-for i in $(cat $MODDIR/system.prop | grep "[a-zA-Z0-9]=[a-zA-Z0-9]"); do
-  (echo $i | grep "#" >dev/null 2>dev/null) || log_print "${i%=*} -> ${i#*=}"
+# Remove conditional properties
+log_print "* Removing conditional properties from system.prop"
+for i in $to_be_removed; do
+  if (grep -q "$i=" $MODDIR/system.prop); then
+    sed -i 's/${i}=.*//g' $MODDIR/system.prop
+	resetprop --delete $i
+    log_print "${i}: removed"
+  fi
 done
 
+# Set properties
+log_print "* Setting properties through resetprop"
+for i in $(cat $MODDIR/system.prop | grep "[a-zA-Z0-9]=[a-zA-Z0-9]" | sed 's/ /_/g'); do
+  [[ $(echo $i | grep "#_") ]] || log_print "${i%=*} -> ${i#*=}"
+done
+
+if [ $ram -le 1024 ]; then
+  set_prop dalvik.vm.heaptargetutilization 0.9
+else
+  set_prop dalvik.vm.heaptargetutilization 0.75
+fi
+
+set_prop dalvik.vm.image-dex2oat-filter $filter
 if [ $API -ge 25 ]; then
-  set_prop pm.dexopt.bg-dexopt $filter
-  log_print "pm.dexopt.bg-dexopt -> $filter"
   if [ $ram -le 1024 ]; then
     set_prop dalvik.vm.dex2oat-swap true
-	log_print "dalvik.vm.dex2oat-swap -> true"
-	set_prop dalvik.vm.heaptargetutilization 0.9
-	log_print "dalvik.vm.heaptargetutilization -> 0.9"
   else
     set_prop dalvik.vm.dex2oat-swap false
-	log_print "dalvik.vm.dex2oat-swap -> false"
-	set_prop dalvik.vm.heaptargetutilization 0.75
-	log_print "dalvik.vm.heaptargetutilization -> 0.75"
   fi
+elif [ $API -ge 23 ]; then
+  ! grep -q -i samsung /system/build.prop && {
+    set_prop dalvik.vm.dex2oat-threads 4
+  } || log_print "Samsung Detected! Skipping dalvik.vm.dex2oat-threads"
 fi
+log_print "* Done"

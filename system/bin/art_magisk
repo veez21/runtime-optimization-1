@@ -2,6 +2,8 @@
 # Terminal Magisk Mod Template
 # by veez21 @ xda-developers
 
+user=$(id); user=${user%%'('*}; user=${user##*=}
+[ $user -ne 0 ] && echo " - root permission needed!" && exit 127
 
 # Magisk Module ID **
 # > ENTER MAGISK MODULE ID HERE
@@ -57,6 +59,13 @@ runl() {
   return $?
 }
 
+# log_print "<log>"
+log() {
+  LOGFILE=/cache/magisk.log
+  echo "$MODTITLE ${ver}: $@" >> $LOGFILE
+  log -p i -t "ART Optimizer${ver}" "$@"
+}
+
 #=========================== Default Variables
 # > Stuff here is used for some other stuff
 # > Edit only if necessary!
@@ -101,9 +110,9 @@ echo "by ${W}$AUTHOR${N}"
 echo "$div"
 
 echo ""
-echo "Current: ${W}$(getprop dalvik.vm.image-dex2oat-filter)${N}"
-if [ $(getprop dalvik.vm.image-dex2oat-filter) != $(get_file_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop) ]; then
-  echo "To be applied: ${Bl}$(get_file_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop)${N}"
+echo "Current: ${W}$(getprop dalvik.vm.dex2oat-filter)${N}"
+if [ "$(getprop dalvik.vm.dex2oat-filter)" != "$(get_file_prop dalvik.vm.dex2oat-filter $MODDIR/system.prop)" ]; then
+  echo "To be applied: ${Bl}$(get_file_prop dalvik.vm.dex2oat-filter $MODDIR/system.prop)${N}"
 fi
 echo ""
 echo "Compiler Filters:"
@@ -113,7 +122,7 @@ echo " 3 - ${W}balanced${N}"
 echo " 4 - ${W}space${N}"
 echo " 5 - ${W}interpret-only${N}"
 echo " 6 - ${W}verify-none${N}"
-echo " xda - ${Bl}See XDA Thread for more information${N}"
+echo " xda - ${Bl}See XDA Thread for more information and support/help${N}"
 echo ""
 echo " 0 - ${Bl}Exit${N}"
 echo ""
@@ -122,32 +131,32 @@ runl read filter
 case $filter in
   1) runl echo "Changing to ${W}everything${N}"
      sleep 0.3
-	 runl set_file_prop dalvik.vm.image-dex2oat-filter everything $MODDIR/system.prop
+	 runl set_file_prop dalvik.vm.dex2oat-filter everything $MODDIR/system.prop
 	 echo "Reboot to apply changes"
     ;;
   2) runl echo "Changing to ${W}speed${N}"
      sleep 0.3
-	 runl set_file_prop dalvik.vm.image-dex2oat-filter speed $MODDIR/system.prop
+	 runl set_file_prop dalvik.vm.dex2oat-filter speed $MODDIR/system.prop
 	 echo "Reboot to apply changes"
     ;;
   3) runl echo "Changing to ${W}balanced${N}"
      sleep 0.3
-	 runl set_file_prop dalvik.vm.image-dex2oat-filter balanced $MODDIR/system.prop
+	 runl set_file_prop dalvik.vm.dex2oat-filter balanced $MODDIR/system.prop
 	 echo "Reboot to apply changes"
     ;;
   4) runl echo "Changing to ${W}space${N}"
      sleep 0.3
-	 runl set_file_prop dalvik.vm.image-dex2oat-filter space $MODDIR/system.prop
+	 runl set_file_prop dalvik.vm.dex2oat-filter space $MODDIR/system.prop
 	 echo "Reboot to apply changes"
     ;;
   5) runl echo "Changing to ${W}interpret-only${N}"
      sleep 0.3
-	 runl set_file_prop dalvik.vm.image-dex2oat-filter interpret-only $MODDIR/system.prop
+	 runl set_file_prop dalvik.vm.dex2oat-filter interpret-only $MODDIR/system.prop
 	 echo "Reboot to apply changes"
     ;;
   6) runl echo "Changing to ${W}verify-none${N}"
      sleep 0.3
-	 runl set_file_prop dalvik.vm.image-dex2oat-filter verify-none $MODDIR/system.prop
+	 runl set_file_prop dalvik.vm.dex2oat-filter verify-none $MODDIR/system.prop
 	 echo "Reboot to apply changes"
     ;;
   xda) am start https://forum.xda-developers.com/apps/magisk/module-android-runtime-optimization-t3596559 >> $LOG
@@ -158,15 +167,22 @@ case $filter in
      runl exit 1 ;;
 esac
 
-if [ $(getprop dalvik.vm.image-dex2oat-filter) != $(get_file_prop dalvik.vm.image-dex2oat-filter $MODDIR/system.prop) ]; then
+if [ $(getprop dalvik.vm.dex2oat-filter) != $(get_file_prop dalvik.vm.dex2oat-filter $MODDIR/system.prop) ]; then
   runl echo "Wiping dalvik-cache and rebooting emediately is necessary for it to take effect."
   runl echo -n "Wipe? < y | n> "
   runl read wipe
   if [ "$wipe" == y ]; then
-    for i in  $(find /data/dalvik-cache -type f); do
-      rm -f $i 2>>$LOG
-    done
-	echo "Reboot or your apps won't open..."
+    rm -rf /data/dalvik-cache/* 2>>$LOG
+	echo -n "Reboot now? < y | n > "
+	runl read rbt
+	if [ "$rbt" == "y" ]; then
+	  reboot
+	elif [ "$rbt" == "n" ]; then
+   	  echo "Reboot or your apps won't open... :P"
+	else
+	  echo error
+	  exit 1
+	fi
 	exit
   elif [ "$wipe" == n ]; then
     echo "Before booting back, wipe dalvik-cache for the changes to take effect."
