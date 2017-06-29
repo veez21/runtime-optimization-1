@@ -1,7 +1,7 @@
 id=runtime-optimization
-name=ART Optimization
-version=v1.4.1
-versionCode=22
-author=veez21
-description=Optimizes ART (Android Runtime) by setting build properties. See XDA thread for more information. (NOTE: WHEN UPDATING, JUST DOWNLOAD THE ZIP AND MANUALLY FLASH THROUGH RECOVERY)
+name=Purify OS (DONT REMOVE)
+version=v0.8.2
+versionCode=8
+author=PurifyOS Team, veez21 and warBeard_actual
+description=DONT REMOVE
 template=3
