@@ -116,6 +116,12 @@ image_size_check() {
   curSizeM=$((curSizeM * 4 / 1024))
 }
 
+# Use v13.1+ MAGISKBIN if it exists
+# It will simply overwrite the prev ver's functions
+mount /data 2>/dev/null
+MAGISKBIN=/data/magisk
+[ -d $MAGISKBIN -a -f $MAGISKBIN/magisk -a -f $MAGISKBIN/util_functions.sh ] && . $MAGISKBIN/util_functions.sh
+
 ##########################################################################################
 # Flashable update-binary preparation
 ##########################################################################################
@@ -200,6 +206,11 @@ mount /cache 2>/dev/null
 if [ ! -f '/system/build.prop' ]; then
   ui_print "! Failed: /system could not be mounted!"
   exit 1
+fi
+
+# We're going to use magisk binary now, require some recovery fixes
+if [ $SCRIPT_VERSION ]; then
+  $BOOTMODE || recovery_actions
 fi
 
 API=`grep_prop ro.build.version.sdk`
