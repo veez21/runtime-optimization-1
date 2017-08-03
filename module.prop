@@ -1,7 +1,7 @@
 id=runtime-optimization
 name=ART Optimization
-version=v1.4.1
-versionCode=22
+version=v1.5
+versionCode=23
 author=veez21
 description=Optimizes ART (Android Runtime) by setting build properties. See XDA thread for more information. (NOTE: WHEN UPDATING, JUST DOWNLOAD THE ZIP AND MANUALLY FLASH THROUGH RECOVERY)
 template=4
