@@ -3,7 +3,7 @@
 # by veez21
 
 # Exit Codes: 
-# 1 - nothing supplied/help invoked
+# 1 - nothing supplied
 # 2 - applying filter failed
 # 3 - file is not compatible
 # 4 - file is not executable
@@ -34,7 +34,7 @@ setfilter [--compiler-filter] [file]
 	  space
 	  interpret-only
 	  verify-none
-setfilter xda [see XDA Thread]
+setfilter xda - see XDA Thread
 EOF
 exit $1
 }
@@ -44,8 +44,8 @@ secho() {
   sleep 0.2
 }
 
-[ -z $1 ] && help_message
-[ "$1" == "--help" ] && help_message 1 || [ "$1" == "-h" ] && help_message 1
+[ -z $1 ] && help_message 1
+[ "$1" == "--help" ] && help_message || [ "$1" == "-h" ] && help_message
 [ "$1" == "xda" ] && { ; am start https://forum.xda-developers.com/apps/magisk/module-android-runtime-optimization-t3596559 2>/dev/null >/dev/null; exit; }
 if [ $2 ]; then
   file=$2
@@ -82,6 +82,7 @@ else
   }
   [ -x $file ] && secho " --- $file can be executed" || {
     secho " --- $file is not executable"
+	exit 4
   }
 fi
 
