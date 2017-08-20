@@ -309,33 +309,27 @@ for TARGET in $REPLACE; do
 done
 
 # Auto Mount
-if $AUTOMOUNT; then
-  mktouch $MODPATH/auto_mount
-fi
+$AUTOMOUNT && mktouch $MODPATH/auto_mount
 
 # prop files
-if $PROPFILE; then
+$PROPFILE && {
   cp -af $INSTALLER/common/system.prop $MODPATH/system.prop
   set_prop dalvik.vm.dex2oat-filter $prev $MODPATH/system.prop
-fi
+}
 
 # Module info
 cp -af $INSTALLER/module.prop $MODPATH/module.prop
-if $BOOTMODE; then
+$BOOTMODE && {
   # Update info for Magisk Manager
   mktouch /magisk/$MODID/update
   cp -af $INSTALLER/module.prop /magisk/$MODID/module.prop
-fi
+}
 
 # post-fs-data mode scripts
-if $POSTFSDATA; then
-  cp -af $INSTALLER/common/post-fs-data.sh $MODPATH/post-fs-data.sh
-fi
+$POSTFSDATA && cp -af $INSTALLER/common/post-fs-data.sh $MODPATH/post-fs-data.sh
 
 # service mode scripts
-if $LATESTARTSERVICE; then
-  cp -af $INSTALLER/common/service.sh $MODPATH/service.sh
-fi
+$LATESTARTSERVICE && cp -af $INSTALLER/common/service.sh $MODPATH/service.sh
 
 ui_print "- Setting permissions"
 set_permissions

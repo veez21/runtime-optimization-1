@@ -33,10 +33,8 @@ You can change the default compiler-filter with the one you prefer (or want to e
 Just go to [Terminal Emulator](https://play.google.com/store/apps/details?id=jackpal.androidterm) and then type:
 
 	setfilter [--compiler-filter] [file]
-![setfilter]()
 
 If you haven't entered your filter, it'll present you on how to use it.
-![setfilter help]()
 
 ### UNIFIED Installer
 
@@ -47,6 +45,11 @@ It installs in this order according to detection:
 
 
 ### Changelog
+#### v1.5
+* update-binary updated to support Magisk v13.x
+* exit codes fixed
+* Future proofing
+* Other cosmetic changes
 #### v1.4.1
 * setfilter needs root access!
 * art_magisk needs root access!
