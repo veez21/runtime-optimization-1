@@ -46,7 +46,7 @@ It installs in this order according to detection:
 
 ### Changelog
 #### v1.5
-* update-binary updated to support Magisk v13.x
+* update-binary updated to support Magisk v13+
 * exit codes fixed
 * Future proofing
 * Other cosmetic changes
