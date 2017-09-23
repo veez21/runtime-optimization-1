@@ -2,6 +2,7 @@
 
 # Detect whether in boot mode
 ps | grep zygote | grep -v grep >/dev/null && BOOTMODE=true || BOOTMODE=false
+$BOOTMODE || ps -A 2>/dev/null | grep zygote | grep -v grep >/dev/null && BOOTMODE=true
 
 # Default permissions
 umask 022
@@ -116,6 +117,12 @@ image_size_check() {
   curSizeM=$((curSizeM * 4 / 1024))
 }
 
+# Use v13.1+ MAGISKBIN if it exists
+# It will simply overwrite the prev ver's functions
+mount /data 2>/dev/null
+MAGISKBIN=/data/magisk
+[ -d $MAGISKBIN -a -f $MAGISKBIN/magisk -a -f $MAGISKBIN/util_functions.sh ] && . $MAGISKBIN/util_functions.sh
+
 ##########################################################################################
 # Flashable update-binary preparation
 ##########################################################################################
@@ -188,8 +195,11 @@ ui_print "******************************"
 ui_print "Powered by Magisk (@topjohnwu)"
 ui_print "******************************"
 
-ui_print "- Mounting /system(ro), /vendor(ro), /data, /cache"
-mount -o ro /system 2>/dev/null
+UPDATE=false
+SAM_XPOSED=false
+
+ui_print "- Mounting /system(rw), /vendor(ro), /data, /cache"
+mount /system 2>/dev/null
 mount -o ro /vendor 2>/dev/null
 mount /data 2>/dev/null
 mount /cache 2>/dev/null
@@ -197,6 +207,11 @@ mount /cache 2>/dev/null
 if [ ! -f '/system/build.prop' ]; then
   ui_print "! Failed: /system could not be mounted!"
   exit 1
+fi
+
+# We're going to use magisk binary now, require some recovery fixes
+if [ $SCRIPT_VERSION ]; then
+  $BOOTMODE || recovery_actions
 fi
 
 API=`grep_prop ro.build.version.sdk`
@@ -214,12 +229,18 @@ if [ "$ABILONG" = "x86_64" ]; then ARCH=x64; IS64BIT=true; fi;
 # You can get the Android API version from $API, the CPU architecture from $ARCH
 # Useful if you are creating Android version / platform dependent mods
 
+if (grep -q samsung /system/build.prop); then
+  [ -f /system/xposed.prop ] && {
+    ui_print "! Samsung + Xposed Detected..."
+	SAM_XPOSED=true
+  }
+fi
+
 if is_mounted /data; then
   IMG=/data/$IMGNAME
   if [ ! -f "/data/magisk.img" ]; then
     ui_print "! Magisk is not installed!"
-    ui_print "! Magisk is required for this mod!"
-    exit 1
+    install_workaround
   fi
 else
   IMG=/cache/magisk.img
@@ -256,6 +277,24 @@ if ! is_mounted $MOUNTPATH; then
   exit 1
 fi
 
+if (grep -q samsung /system/build.prop); then
+  [ -f /system/xposed.prop ] && {
+    ui_print "! Samsung + Xposed Detected..."
+	SAM_XPOSED=true
+  }
+fi
+
+if [ -f $MODPATH/system.prop ]; then
+  prev=$(get_file_prop dalvik.vm.dex2oat-filter $MODPATH/system.prop)
+  if [ $? -eq 0 ]; then
+    ui_print "- --compiler-filter: $prev"
+  else
+    ui_print "- --compiler-filter: speed"
+	prev=speed
+  fi
+  UPDATE=true
+fi
+
 # Create mod paths
 rm -rf $MODPATH 2>/dev/null
 mkdir -p $MODPATH
@@ -270,32 +309,27 @@ for TARGET in $REPLACE; do
 done
 
 # Auto Mount
-if $AUTOMOUNT; then
-  mktouch $MODPATH/auto_mount
-fi
+$AUTOMOUNT && mktouch $MODPATH/auto_mount
 
 # prop files
-if $PROPFILE; then
+$PROPFILE && {
   cp -af $INSTALLER/common/system.prop $MODPATH/system.prop
-fi
+  set_prop dalvik.vm.dex2oat-filter $prev $MODPATH/system.prop
+}
 
 # Module info
 cp -af $INSTALLER/module.prop $MODPATH/module.prop
-if $BOOTMODE; then
+$BOOTMODE && {
   # Update info for Magisk Manager
   mktouch /magisk/$MODID/update
   cp -af $INSTALLER/module.prop /magisk/$MODID/module.prop
-fi
+}
 
 # post-fs-data mode scripts
-if $POSTFSDATA; then
-  cp -af $INSTALLER/common/post-fs-data.sh $MODPATH/post-fs-data.sh
-fi
+$POSTFSDATA && cp -af $INSTALLER/common/post-fs-data.sh $MODPATH/post-fs-data.sh
 
 # service mode scripts
-if $LATESTARTSERVICE; then
-  cp -af $INSTALLER/common/service.sh $MODPATH/service.sh
-fi
+$LATESTARTSERVICE && cp -af $INSTALLER/common/service.sh $MODPATH/service.sh
 
 ui_print "- Setting permissions"
 set_permissions
@@ -320,4 +354,18 @@ if ! $BOOTMODE; then
 fi
 
 ui_print "- Done"
+if $SAM_XPOSED; then
+  ui_print ""
+  ui_print "***********************************"
+  ui_print "*      !! Samsung + Xposed !!     *"
+  ui_print "* This module might break Xposed  *"
+  ui_print "* Framework's functionality and   *"
+  ui_print "* might also cause trouble with a *"
+  ui_print "* few other apps.                 *"
+  ui_print "*     !! YOU'VE BEEN WARNED !!    *"
+  ui_print "***********************************"
+fi
+if ! $UPDATE; then
+  message_wipe
+fi
 exit 0

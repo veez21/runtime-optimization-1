@@ -1,0 +1,109 @@
+#!/system/bin/sh
+# Set Compiler Filter for ART Optimization
+# by veez21
+
+# Exit Codes: 
+# 1 - nothing supplied
+# 2 - applying filter failed
+# 3 - file is not compatible
+# 4 - file is not executable
+# 5 - file doesn't exist
+# 6 - file not writable/other reasons
+# 127 - no root access/no write permission 
+# c471c1f312a2c335d8405643848721a9 is used to detect compatibility
+
+user=$(id); user=${user%%'('*}; user=${user##*=}
+[ $user -ne 0 ] && echo " - root permission needed!" && exit 127
+
+mount -o remount,rw / 2>/dev/null
+mount -o remount,rw rootfs 2>/dev/null
+mount -o remount,rw /system 2>/dev/null
+mount -o rw,remount / 2>/dev/null
+mount -o rw,remount rootfs 2>/dev/null
+mount -o rw,remount /system 2>/dev/null
+
+help_message() {
+cat <<EOF
+ART Optimization (Non-Magisk) by veez21
+
+setfilter [--compiler-filter] [file]
+    compiler filters:
+	  everything
+	  speed
+	  balanced
+	  space
+	  interpret-only
+	  verify-none
+setfilter xda - see XDA Thread
+EOF
+exit $1
+}
+
+secho() { 
+  echo "$@" 
+  sleep 0.2
+}
+
+[ -z $1 ] && help_message 1
+[ "$1" == "--help" ] && help_message || [ "$1" == "-h" ] && help_message
+[ "$1" == "xda" ] && { ; am start https://forum.xda-developers.com/apps/magisk/module-android-runtime-optimization-t3596559 2>/dev/null >/dev/null; exit; }
+if [ $2 ]; then
+  file=$2
+  secho " - checking $file"
+  [ -f $file ] && {
+    secho " -- $file exists"
+	secho " -- checking compatibility"
+	[ -x $file ] && {
+	  secho " --- $file can be executed"
+	  grep -q "c471c1f312a2c335d8405643848721a9" $file && secho " ---- $file is compatible" || {
+	    secho " ---- $file is not compatible"
+		exit 3
+	  }
+	} || { 
+	  secho " --- $file is not executable"
+	  exit 4 
+	}
+  } || {
+    secho " -- $file doesn't exist"
+	exit 5
+  }
+else
+  secho " - no file supplied, checking default directories"
+  for i in /magisk/runtime-optimization/service.sh /magisk/.core/post-fs-data.d/art-opt.sh /su/su.d/art-opt.sh /system/su.d/art-opt.sh /system/etc/init.d/art-opt.sh /magisk/.core/post-fs-data/non-magisk.sh /su/su.d/non-magisk.sh /system/su.d/non-magisk.sh /system/etc/init.d/non-magisk.sh; do
+    sleep 0.2
+    [ -f $i ] && file=$i && break
+  done
+  [ -z $file ] && secho " -- no file found" && exit 5
+  secho " -- $file exists"
+  secho " -- checking compatibility"
+  grep -q "c471c1f312a2c335d8405643848721a9" $file && secho " ---- $file is compatible" || {
+    secho " ---- $file is not compatible"
+	exit 3
+  }
+  [ -x $file ] && secho " --- $file can be executed" || {
+    secho " --- $file is not executable"
+	exit 4
+  }
+fi
+
+secho " - checking supplied filter"
+for i in everything speed balanced space interpret-only verify-none; do
+  sleep 0.2
+  if [ $i == $1 ]; then
+    filter=$1
+    break
+  fi
+done
+[ -z $filter ] && secho " -- $1 is not a valid --compiler-filter" && exit 2
+secho " -- $filter is a valid --compiler-filter"
+secho " --- setting $filter for $file"
+sed -i "s/filter=.*/filter=${filter}/g" $file 2>/dev/null
+[ $? -ne 0 ] && secho " - failed" && exit 6
+grep -q "filter=${filter}" $file && { 
+  secho " - successfully changed to $filter"
+  secho " - reboot and wipe dalvik-cache for changes to apply"
+  exit
+  } || {
+  secho " - failed"
+  exit 2
+}

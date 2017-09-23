@@ -4,13 +4,11 @@
 
 ## You can edit this if you like ;)
 ## More information in the XDA thread
-dalvik.vm.image-dex2oat-filter=speed
+dalvik.vm.dex2oat-filter=speed
 ## You can edit this if you like ;)
 
-## Don't touch me :P
-dalvik.vm.dex2oat-filter=speed
+## Don't touch the properties below :p
 dalvik.vm.check-dex-sum=false
 dalvik.vm.checkjni=false
-dalvik.vm.execution-mode=int:jit
-dalvik.vm.dex2oat-thread_count=4
-## Don't touch me :P
+dalvik.vm.usejit=true
+dalvik.vm.dexopt-flags=v=a,o=v
